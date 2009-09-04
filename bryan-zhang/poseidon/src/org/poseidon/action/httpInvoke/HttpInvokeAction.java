@@ -12,15 +12,15 @@ import org.poseidon.action.BaseDispatchAction;
 import org.poseidon.util.Dom4jUtil;
 import org.poseidon.util.ServletUtil;
 
-public class Test1 extends BaseDispatchAction {
-	public ActionForward returnStr(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+public class HttpInvokeAction extends BaseDispatchAction {
+	public ActionForward returnStrMethod(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String returnStr;
 		returnStr = "hello,world!!!!!! very 的 hello";
 		ServletUtil.writerText(response,returnStr);
 		return null;
 	}
 	
-	public ActionForward returnXml(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ActionForward returnXmlMethod(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Document doc = Dom4jUtil.createDocument();
 		Element e = doc.addElement("parent");
 		e.addElement("child").setText("a");

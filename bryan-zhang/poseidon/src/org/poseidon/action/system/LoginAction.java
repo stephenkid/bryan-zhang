@@ -15,7 +15,7 @@ public class LoginAction extends BaseDispatchAction {
 	@Resource(name = "loginService")
 	private LoginService loginService;
 	
-	public ActionForward login(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public ActionForward loginMethod(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String validate = request.getParameter("validate");
 		String loginEmail = request.getParameter("loginEmail");
 		String password = request.getParameter("loginPassword");
@@ -30,7 +30,7 @@ public class LoginAction extends BaseDispatchAction {
 		return forward;
 	}
 
-	public ActionForward loginOff(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
+	public ActionForward loginOffMethod(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) {
 		request.getSession().invalidate();
 		return null;
 	}
