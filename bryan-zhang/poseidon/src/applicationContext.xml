@@ -26,24 +26,16 @@
 		">
 		
 		
-	<bean id="dataSource1" class="org.springframework.jndi.JndiObjectFactoryBean">
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName" value="jdbc/DS1"/><!-- for tomcat -->
 		<!-- 
 		<property name="jndiName" value="java:/jdbc/DS1"/> for jboss 
 		-->
 		<property name="resourceRef" value="true"/>
 	</bean>
-	
-	<bean id="dataSource2" class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="jdbc/DS2"/><!-- for tomcat -->
-		<!-- 
-		<property name="jndiName" value="java:/jdbc/DS2"/> for jboss 
-		-->
-		<property name="resourceRef" value="true"/>
-	</bean>
 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-		<property name="dataSource" ref="dataSource1" />
+		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan">
 			<list>
 				<value>org.poseidon.pojo</value>
