@@ -44,6 +44,17 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
+	<!-- session有效期过滤器 -->
+	<filter>
+		<filter-name>SessionValidFilter</filter-name>
+		<filter-class>org.poseidon.filter.SessionValidFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>SessionValidFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	
 	<!-- 跟踪日志过滤器 -->
 	<filter>
 		<filter-name>FileLogFilter</filter-name>
