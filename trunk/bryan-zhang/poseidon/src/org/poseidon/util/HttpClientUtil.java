@@ -32,8 +32,6 @@ import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
 import org.apache.commons.httpclient.util.EncodingUtil;
 import org.apache.log4j.Logger;
-import org.poseidon.util.util2.LoggerUtil;
-import org.poseidon.util.util2.ObjectUtil;
 
 /**
  * MiscUtil
