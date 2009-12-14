@@ -6,8 +6,22 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath:applicationContext*.xml</param-value>
+		<param-value>classpath:com/hermes/config/spring/spring*.xml</param-value>
 	</context-param>
+
+	<!-- Loader Context -->
+	<listener>
+		<listener-class>
+			org.springframework.web.context.ContextLoaderListener
+		</listener-class>
+	</listener>
+	
+	<!-- Web Loader Class GC -->
+	<listener>
+	    <listener-class>
+	    	org.springframework.web.util.IntrospectorCleanupListener
+	    </listener-class>
+	</listener>
 
 	<!-- 编码过滤器 -->
 	<filter>
