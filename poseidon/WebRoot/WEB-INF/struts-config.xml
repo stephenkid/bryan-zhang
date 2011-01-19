@@ -16,7 +16,8 @@
 			<forward name="loginFailure" path="/index.jsp"/>
 		</action>
 		
-		<action path="/httpInvokeAction" scope="request" parameter="method" type="org.springframework.web.struts.DelegatingActionProxy" >
+		
+		<action path="/testAction" scope="request" parameter="method" type="org.springframework.web.struts.DelegatingActionProxy" >
 		</action>
 	</action-mappings>
 	

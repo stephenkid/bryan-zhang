@@ -5,9 +5,8 @@ import org.poseidon.util.HttpClientUtil;
 
 public class TestMain {
 	public static void main(String[] args) throws Exception{
-    	NameValuePair[] data = {new NameValuePair("method", "returnXmlMethod")}; 
+    	NameValuePair[] data = {new NameValuePair("method", "test")}; 
 
-    	String returnText = HttpClientUtil.sendPost("http://localhost:8085/poseidon/httpInvokeAction.do", data, 6000);
-    	System.out.println(returnText);
+    	HttpClientUtil.sendPost("http://127.0.0.1/poseidon/testAction.do", data, 6000);
     }
 }
