@@ -19,6 +19,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Component;
 
 @Component("loginService")
+@SuppressWarnings("unchecked")
 public class LoginServiceImpl implements LoginService {
 	@Resource(name = "jdbcTemplate")
 	private JdbcTemplate jdbcTemplate;
@@ -27,7 +28,6 @@ public class LoginServiceImpl implements LoginService {
 	@Resource(name = "onLineUserSessionBindingListener")
 	HttpSessionBindingListener onLineUserSessionBindingListener;
 
-	@SuppressWarnings("unchecked")
 	public String returnLoginMessage(String loginNo, String password) throws Exception {
 		String loginMessage = "success";
 		List<Login> loginList = hibernateTemplate.find("from Login l where upper(l.loginEmail)=? and l.loginPassword=?", new String[] {
@@ -42,7 +42,6 @@ public class LoginServiceImpl implements LoginService {
 		return loginMessage;
 	}
 
-	@SuppressWarnings("unchecked")
 	public void setSession(String loginEmail,HttpServletRequest request,HttpServletResponse response) throws Exception {
 		Login login = this.getLogin(loginEmail);
 		if(login==null){
@@ -68,7 +67,7 @@ public class LoginServiceImpl implements LoginService {
 
 	
 
-	@SuppressWarnings("unchecked")
+	
 	private Login getLogin(String loginEmail) {
 		List<Login> loginList = hibernateTemplate.find("from Login l where upper(l.loginEmail)=?", new String[] { loginEmail.toUpperCase() });
 		Login login = null;
@@ -76,5 +75,9 @@ public class LoginServiceImpl implements LoginService {
 			login = loginList.get(0);
 		}
 		return login;
+	}
+	
+	public void addLogin(Login login) throws Exception{
+		hibernateTemplate.save(login);
 	}
 }

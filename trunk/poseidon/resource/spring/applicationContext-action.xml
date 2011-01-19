@@ -10,5 +10,5 @@
 		
 		
 	<bean name="/loginAction" class="org.poseidon.action.system.LoginAction"/>
-	<bean name="/httpInvokeAction" class="org.poseidon.action.demo.httpInvoke.HttpInvokeAction"/>
+	<bean name="/testAction" class="org.poseidon.action.demo.test.TestAction"/>
 </beans>
