@@ -23,7 +23,7 @@
 		<script type="text/javascript">
 			window.onbeforeunload=function(){
 				var url="${pageContext.request.contextPath}/loginAction.do";
-				var pars="method=loginOffMethod";
+				var pars="action=loginOff";
 				new Ajax.Request(url,{method: 'post', parameters: pars, onComplete: function(originalRequest){
 					window.close();
 				}});

@@ -63,22 +63,12 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
-
-	<bean class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
-    	<property name="transactionInterceptor">
-	    	<bean class="org.springframework.transaction.interceptor.TransactionInterceptor">
-		    	<property name="transactionManager">
-		    		<bean class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-						<property name="sessionFactory" ref="sessionFactory"/>
-					</bean>
-		    	</property>
-		    	<property name="transactionAttributeSource">
-		    		<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
-		    	</property>
-		    </bean>
-    	</property>
-    </bean>
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
 	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- 扫描带有标注组件的位置 -->
 	<context:component-scan base-package="org.poseidon.service,org.poseidon.listener"/>
 </beans>

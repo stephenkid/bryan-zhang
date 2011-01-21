@@ -1,14 +1,9 @@
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
-<%@taglib uri="http://www.extremecomponents.org" prefix="ec"%>
-<%@taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
-<%@taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
-<%@taglib uri="http://struts.apache.org/tags-logic" prefix="logic"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 
-<html:html>
+<html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<meta http-equiv="Cache-Control" content="no-store"/>
@@ -48,7 +43,7 @@
 					sb.value="验证中..";
 					sb.style.cursor="wait";
 					var url="${pageContext.request.contextPath}/loginAction.do";
-					pars="method=loginMethod&validate=validate&loginEmail="+$F("loginEmail")+"&loginPassword="+$F("loginPassword");
+					pars="action=login&validate=validate&loginEmail="+$F("loginEmail")+"&loginPassword="+$F("loginPassword");
 					new Ajax.Request(url,{method: 'post', parameters: pars, onComplete: function(originalRequest){
 						sb.disabled="";
 						sb.value=sbValue;
@@ -88,7 +83,7 @@
 		</script>
 	</head>
 	<body style="text-align: center;">
-		<form action="${pageContext.request.contextPath}/loginAction.do?method=loginMethod" method="post" name="theForm" target="win" style="width: 808;height: 524;">
+		<form action="${pageContext.request.contextPath}/loginAction.do?action=login" method="post" name="theForm" target="win" style="width: 808;height: 524;">
 			<table cellspacing="0" cellpadding="0" style="margin-top:400px;" width="200px">
 				<tr>
 					<td style="font-size:13px;color:#000000;">帐&nbsp;号：</td>
@@ -111,4 +106,4 @@
 			</table>
 		</form>
 	</body>
-</html:html>
+</html>
