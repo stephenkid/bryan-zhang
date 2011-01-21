@@ -16,8 +16,8 @@ import javax.persistence.TemporalType;
 @Table(name = "t_login", catalog = "poseidon")
 public class Login implements java.io.Serializable {
 
-	// Fields
-
+	private static final long serialVersionUID = -388009660243783191L;
+	
 	private Long loginId;
 	private String loginEmail;
 	private String loginPassword;

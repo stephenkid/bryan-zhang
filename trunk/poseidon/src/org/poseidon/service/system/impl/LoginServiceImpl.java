@@ -19,7 +19,6 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Component;
 
 @Component("loginService")
-@SuppressWarnings("unchecked")
 public class LoginServiceImpl implements LoginService {
 	@Resource(name = "jdbcTemplate")
 	private JdbcTemplate jdbcTemplate;
@@ -65,9 +64,6 @@ public class LoginServiceImpl implements LoginService {
 		session.setAttribute(poseidonSession.getLogin().getLoginEmail(), onLineUserSessionBindingListener);
 	}
 
-	
-
-	
 	private Login getLogin(String loginEmail) {
 		List<Login> loginList = hibernateTemplate.find("from Login l where upper(l.loginEmail)=?", new String[] { loginEmail.toUpperCase() });
 		Login login = null;

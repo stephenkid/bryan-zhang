@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+    default-lazy-init ="false">
+
+	<!-- spring的mapping处理器，如不写，默认为BeanNameUrlHandlerMapping -->		
+	<bean id="handlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="urlMap">
+			<map>
+				<entry key="/loginAction.do">
+					<ref bean="loginController"/>
+				</entry>
+				<entry key="/testAction.do">
+					<ref bean="testController"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	
+	<!-- login -->
+	<bean id="loginController" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
+		<property name="delegate" ref="loginDelegate"/>
+		<property name="methodNameResolver" ref="loginReslver"/>
+	</bean>
+	
+	<bean id="loginReslver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+		<property name="methodParamNames" value="login,loginOff"/>
+	</bean>
+	
+	<bean id="loginDelegate" class="org.poseidon.action.system.LoginController"/>
+
+	<!-- test -->
+	<bean id="testController" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
+		<property name="delegate" ref="testDelegate"/>
+		<property name="methodNameResolver" ref="testReslver"/>
+	</bean>
+	
+	<bean id="testReslver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+		<property name="methodParamNames" value="test"/>
+	</bean>
+	
+	<bean id="testDelegate" class="org.poseidon.action.demo.test.TestController"/>
+</beans>
