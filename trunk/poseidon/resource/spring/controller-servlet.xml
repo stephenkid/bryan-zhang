@@ -32,7 +32,11 @@
 		<property name="methodParamNames" value="login,loginOff"/>
 	</bean>
 	
-	<bean id="loginDelegate" class="org.poseidon.action.system.LoginController"/>
+	<bean id="loginDelegate" class="org.poseidon.action.system.LoginController">
+		<property name="loginService">
+			<ref bean="loginService"/>
+		</property>
+	</bean>
 
 	<!-- test -->
 	<bean id="testController" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
@@ -44,5 +48,9 @@
 		<property name="methodParamNames" value="test"/>
 	</bean>
 	
-	<bean id="testDelegate" class="org.poseidon.action.demo.test.TestController"/>
+	<bean id="testDelegate" class="org.poseidon.action.demo.test.TestController">
+		<property name="loginService">
+			<ref bean="loginService"/>
+		</property>
+	</bean>
 </beans>
