@@ -1,9 +1,9 @@
-package org.poseidon.action.demo.httpInvoke;
+package org.poseidon.action;
 
 import org.apache.commons.httpclient.NameValuePair;
 import org.poseidon.util.HttpClientUtil;
 
-public class TestMain {
+public class HttpInvokeMain {
 	public static void main(String[] args) throws Exception{
     	NameValuePair[] data = {new NameValuePair("method", "test")}; 
 

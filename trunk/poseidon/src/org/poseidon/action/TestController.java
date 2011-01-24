@@ -1,11 +1,10 @@
-package org.poseidon.action.demo.test;
+package org.poseidon.action;
 
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.poseidon.action.BaseController;
 import org.poseidon.pojo.Login;
 import org.poseidon.service.system.LoginService;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +15,7 @@ public class TestController extends BaseController {
 	
 	private LoginService loginService;
 	
-	public ModelAndView test(HttpServletRequest request, HttpServletResponse response) throws Exception{
+	public ModelAndView test(HttpServletRequest request, HttpServletResponse response, Object obj) throws Exception{
 		ModelAndView modelAndView = new ModelAndView();
 		Login loginItem = new Login();
 		loginItem.setLoginEmail("weenyc31@163.com");
