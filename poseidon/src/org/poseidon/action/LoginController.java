@@ -1,9 +1,8 @@
-package org.poseidon.action.system;
+package org.poseidon.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.poseidon.action.BaseController;
 import org.poseidon.service.system.LoginService;
 import org.poseidon.util.ServletUtil;
 import org.springframework.web.servlet.ModelAndView;
