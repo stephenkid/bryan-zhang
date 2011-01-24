@@ -32,7 +32,7 @@
 		<property name="methodParamNames" value="login,loginOff"/>
 	</bean>
 	
-	<bean id="loginDelegate" class="org.poseidon.action.LoginController">
+	<bean id="loginDelegate" class="org.poseidon.controller.LoginController">
 		<property name="loginService">
 			<ref bean="loginService"/>
 		</property>
@@ -48,7 +48,7 @@
 		<property name="methodParamNames" value="test"/>
 	</bean>
 	
-	<bean id="testDelegate" class="org.poseidon.action.TestController">
+	<bean id="testDelegate" class="org.poseidon.controller.TestController">
 		<property name="loginService">
 			<ref bean="loginService"/>
 		</property>

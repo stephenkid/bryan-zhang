@@ -1,4 +1,4 @@
-package org.poseidon.action;
+package org.poseidon.controller;
 
 import org.apache.commons.httpclient.NameValuePair;
 import org.poseidon.util.HttpClientUtil;
