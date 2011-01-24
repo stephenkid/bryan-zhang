@@ -2,7 +2,6 @@ package org.poseidon.action.demo.test;
 
 import java.util.Date;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,7 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
 @Transactional
 public class TestController extends BaseController {
 	
-	@Resource(name = "loginService")
 	private LoginService loginService;
 	
 	public ModelAndView test(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -30,5 +28,13 @@ public class TestController extends BaseController {
 		loginService.addLogin(loginItem);
 		modelAndView.setViewName(null);
 		return modelAndView;
+	}
+
+	public LoginService getLoginService() {
+		return loginService;
+	}
+
+	public void setLoginService(LoginService loginService) {
+		this.loginService = loginService;
 	}
 }

@@ -1,6 +1,5 @@
 package org.poseidon.action.system;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -10,7 +9,7 @@ import org.poseidon.util.ServletUtil;
 import org.springframework.web.servlet.ModelAndView;
 
 public class LoginController extends BaseController {
-	@Resource(name = "loginService")
+	
 	private LoginService loginService;
 	
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -31,5 +30,13 @@ public class LoginController extends BaseController {
 	public ModelAndView loginOff(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		request.getSession().invalidate();
 		return null;
+	}
+
+	public LoginService getLoginService() {
+		return loginService;
+	}
+
+	public void setLoginService(LoginService loginService) {
+		this.loginService = loginService;
 	}
 }
