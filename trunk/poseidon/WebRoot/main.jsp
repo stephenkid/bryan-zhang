@@ -3,7 +3,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib uri="/WEB-INF/tld/ajaxanywhere.tld" prefix="aa"%>
 
 <html>
 	<head>
@@ -12,24 +11,27 @@
 		<meta http-equiv="Pragma" content="no-cache"/>
 		<meta http-equiv="Expires" content="0"/>
 		
-		<style type="text/css" media="screen">
-			@import "${pageContext.request.contextPath}/css/style.css";
-		</style>
-		
-		<script type="text/javascript" src="${pageContext.request.contextPath}/js/prototype.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
 		<script type="text/javascript">
 			window.onbeforeunload=function(){
-				var url="${pageContext.request.contextPath}/loginAction.do";
-				var pars="action=loginOff";
-				new Ajax.Request(url,{method: 'post', parameters: pars, onComplete: function(originalRequest){
-					window.close();
-				}});
+				var urlStr="${pageContext.request.contextPath}/loginAction.do";
+				var dataStr="action=loginOff";
+
+				$.ajax({
+		    		url: urlStr,
+		    		data:dataStr,
+		    		cache: false,
+		    		async: false
+		        });
+
+				window.close();
 			}
+			
 		</script>
 	</head>
-	<body style="margin:6px;">
-		<form name="theForm">
-			这是主页面
-		</form>
+	<body>
+		<a href="${pageContext.request.contextPath}/binder/test.jsp" target="appFrame">数据Form绑定</a>
+		<hr>
+		<iframe id="appFrame" name="appFrame" style="position:absolute;top:50pt;left:0px;height:100%;width:100%;background-color:#000;" frameborder="0"/>
 	</body>
 </html>

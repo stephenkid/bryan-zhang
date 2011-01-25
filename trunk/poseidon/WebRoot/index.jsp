@@ -14,53 +14,49 @@
 		<style type="text/css" media="screen">
 			@import "${pageContext.request.contextPath}/css/style.css";
 		</style>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/js/prototype.js"></script>
-		<script type="text/javascript" src="${pageContext.request.contextPath}/js/poseidon.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
 		<script language="JavaScript">
 			var win=null;
 			
-			Event.observe(window, 'load', function(){
-				var loginEmail = getCookie("loginEmail");
-				var loginPassword = getCookie("loginPassword");
-				if (loginEmail != null && loginPassword != null){
-					theForm.loginEmail.value = loginEmail;
-					theForm.loginPassword.value = loginPassword;
-					openWin();
-				}
-			});
-			
 			function submitForm(){
-				if($F("loginEmail")==""){
+				if($("#loginEmail").val()==""){
 	    			alert("请输入您的帐号。");
-	    			$("loginEmail").focus();
-				}else if($F("loginPassword")==""){
+	    			$("#loginEmail").focus();
+				}else if($("#loginPassword").val()==""){
 	    			alert("请输入您的密码。");
-	    			$("loginPassword").focus();
+	    			$("#loginPassword").focus();
 				}else{
-					var sb=$("submitButton");
-					var sbValue=sb.value;
-					sb.disabled="true";
-					sb.value="验证中..";
-					sb.style.cursor="wait";
-					var url="${pageContext.request.contextPath}/loginAction.do";
-					pars="action=login&validate=validate&loginEmail="+$F("loginEmail")+"&loginPassword="+$F("loginPassword");
-					new Ajax.Request(url,{method: 'post', parameters: pars, onComplete: function(originalRequest){
-						sb.disabled="";
-						sb.value=sbValue;
-						sb.style.cursor="default";
-						var text=originalRequest.responseText;
-						if(text == "wrongLogin"){
-							alert("您输入的用户名或密码有误，请重新输入。");
-						}else if(text == "invalidLogin"){
-							alert("您的账号目前不可用，请联系管理员并激活。");
-						}else if (text == "hasLogined"){
-							if (window.confirm("您的账号正在登录中，要强制注销并登录吗？")){
-								openWin();
-							}
-						}else if(text == "success"){
+					var sb=$("#submitButton");
+					var sbValue=sb.val()
+					sb.attr("disabled","true");
+					sb.attr("value","验证中..");
+					sb.css("cursor","wait");
+
+
+					var urlStr="${pageContext.request.contextPath}/loginAction.do";
+					dataStr="action=login&validate=validate&loginEmail="+$("#loginEmail").val()+"&loginPassword="+$("#loginPassword").val();
+					var returnStr = $.ajax({
+			    		url: urlStr,
+			    		data:dataStr,
+			    		cache: false,
+			    		async: false
+			        }).responseText;
+
+					sb.attr("disabled","");
+					sb.attr("value",sbValue);
+					sb.css("cursor","default");
+
+					if(returnStr == "wrongLogin"){
+						alert("您输入的用户名或密码有误，请重新输入。");
+					}else if(returnStr == "invalidLogin"){
+						alert("您的账号目前不可用，请联系管理员并激活。");
+					}else if (returnStr == "hasLogined"){
+						if (window.confirm("您的账号正在登录中，要强制注销并登录吗？")){
 							openWin();
 						}
-					}});
+					}else if(returnStr == "success"){
+						openWin();
+					}
 				}
 			}
 			
@@ -88,18 +84,17 @@
 				<tr>
 					<td style="font-size:13px;color:#000000;">帐&nbsp;号：</td>
 					<td>
-						<input type="text" name="loginEmail" class="inputtext" value="" onkeypress="checkButton();" onfocus="this.select();" style="width: 150px;"/>
+						<input type="text" id="loginEmail" name="loginEmail" class="inputtext" value="" onkeypress="checkButton();" onfocus="this.select();" style="width: 150px;"/>
 					</td>
 				</tr>
 				<tr>
 					<td style="font-size:13px;color:#000000;">密&nbsp;码：</td>
 					<td>
-						<input name="loginPassword" type="password" class="inputtext" value="" onkeypress="checkButton();" onfocus="this.select();" style="width: 150px;"/>
+						<input id="loginPassword" name="loginPassword" type="password" class="inputtext" value="" onkeypress="checkButton();" onfocus="this.select();" style="width: 150px;"/>
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align: right;padding-top:5px;">
-						<input type="checkbox" name="isSaveLoginInfo" value="Y">保存登录信息
 						<input type="button" id="submitButton" value="&nbsp;登&nbsp;录&nbsp;" onclick="submitForm();" class="buttonStyle" />
 					</td>
 				</tr>

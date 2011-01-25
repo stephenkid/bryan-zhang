@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import org.apache.commons.lang.StringUtils;
+
 public class DateUtil {
 
 	/**
@@ -80,18 +82,22 @@ public class DateUtil {
 	}
 
 	/**
-	 * DateUtil.strToDate("2006-10-12") 转换为：Thu Oct 12 00:00:00 CST 2006
-	 * <P>
 	 * 把字符串转换成日期类型
 	 */
 	public static Date strToDate(String str) {
-		if (str == null)
-			return null;
-		DateFormat defaultDate = DateFormat.getDateInstance();
 		Date date = null;
-		try {
-			date = defaultDate.parse(str);
-		} catch (ParseException pe) {
+		
+		try{
+			if (StringUtils.isNotEmpty(str)){
+				if (str.length() > 10) {
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					date = formatter.parse(str.substring(0, 18));
+				}else{
+					date = DateFormat.getDateInstance().parse(str);
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		return date;
 	}
@@ -295,5 +301,9 @@ public class DateUtil {
 			exception.printStackTrace();
 		}
 		return "0";
+	}
+	
+	public static void main(String[] args){
+		System.out.println(strToDate("2011-1-25 16:36:23"));
 	}
 }
