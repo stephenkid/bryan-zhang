@@ -27,6 +27,7 @@ public class LoginServiceImpl implements LoginService {
 	@Resource(name = "onLineUserSessionBindingListener")
 	HttpSessionBindingListener onLineUserSessionBindingListener;
 
+	@SuppressWarnings("unchecked")
 	public String returnLoginMessage(String loginNo, String password) throws Exception {
 		String loginMessage = "success";
 		List<Login> loginList = hibernateTemplate.find("from Login l where upper(l.loginEmail)=? and l.loginPassword=?", new String[] {

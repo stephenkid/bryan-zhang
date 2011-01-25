@@ -1,11 +1,13 @@
 package org.poseidon.controller;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.poseidon.pojo.Login;
+import org.poseidon.dto.TestDto;
 import org.poseidon.service.system.LoginService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,18 +17,15 @@ public class TestController extends BaseController {
 	
 	private LoginService loginService;
 	
-	public ModelAndView test(HttpServletRequest request, HttpServletResponse response, Object obj) throws Exception{
-		ModelAndView modelAndView = new ModelAndView();
-		Login loginItem = new Login();
-		loginItem.setLoginEmail("weenyc31@163.com");
-		loginItem.setLoginPassword("111111");
-		loginItem.setLoginName("bryan31");
-		loginItem.setMemo("这是备注");
-		loginItem.setIsAvail(true);
-		loginItem.setInputDate(new Date());
-		loginService.addLogin(loginItem);
-		modelAndView.setViewName(null);
-		return modelAndView;
+	public ModelAndView test(HttpServletRequest request, HttpServletResponse response, TestDto dto) throws Exception{
+		System.out.println("hello world");
+		System.out.println(dto.getTestString());
+		System.out.println(dto.getTestLong());
+		System.out.println(dto.isTestBoo());
+		System.out.println(dto.getTestDate());
+		System.out.println(Arrays.asList(dto.getTestLongArray()));
+		System.out.println(Arrays.asList(dto.getTestStringArray()));
+		return null;
 	}
 
 	public LoginService getLoginService() {
