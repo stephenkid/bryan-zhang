@@ -13,7 +13,7 @@ public class TestDto implements Serializable {
 	
 	private Boolean testBoo;
 	
-	private String testDate;
+	private Date testDate;
 	
 	private String[] testStringArray;
 	
@@ -60,11 +60,11 @@ public class TestDto implements Serializable {
 		this.testLongArray = testLongArray;
 	}
 
-	public String getTestDate() {
+	public Date getTestDate() {
 		return testDate;
 	}
 
-	public void setTestDate(String testDate) {
+	public void setTestDate(Date testDate) {
 		this.testDate = testDate;
 	}
 }
