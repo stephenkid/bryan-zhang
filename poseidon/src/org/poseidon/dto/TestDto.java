@@ -1,6 +1,7 @@
 package org.poseidon.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class TestDto implements Serializable {
 
@@ -10,7 +11,7 @@ public class TestDto implements Serializable {
 	
 	private Long testLong;
 	
-	private boolean testBoo;
+	private Boolean testBoo;
 	
 	private String testDate;
 	
@@ -35,11 +36,11 @@ public class TestDto implements Serializable {
 		this.testLong = testLong;
 	}
 
-	public boolean isTestBoo() {
+	public Boolean isTestBoo() {
 		return testBoo;
 	}
 
-	public void setTestBoo(boolean testBoo) {
+	public void setTestBoo(Boolean testBoo) {
 		this.testBoo = testBoo;
 	}
 

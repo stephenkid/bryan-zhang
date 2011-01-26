@@ -8,49 +8,13 @@
     http://www.springframework.org/schema/context/spring-context-2.5.xsd"
     default-lazy-init ="false">
 
-	<!-- spring的mapping处理器，如不写，默认为BeanNameUrlHandlerMapping -->		
-	<bean id="handlerMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
-		<property name="urlMap">
-			<map>
-				<entry key="/loginAction.do">
-					<ref bean="loginController"/>
-				</entry>
-				<entry key="/testAction.do">
-					<ref bean="testController"/>
-				</entry>
-			</map>
-		</property>
-	</bean>
+	<!-- 扫描注入controller -->
+	<context:component-scan base-package="org.poseidon.controller"/>
 	
-	<!-- login -->
-	<bean id="loginController" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
-		<property name="delegate" ref="loginDelegate"/>
-		<property name="methodNameResolver" ref="loginReslver"/>
-	</bean>
-	
-	<bean id="loginReslver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
-		<property name="methodParamNames" value="login,loginOff"/>
-	</bean>
-	
-	<bean id="loginDelegate" class="org.poseidon.controller.LoginController">
-		<property name="loginService">
-			<ref bean="loginService"/>
-		</property>
-	</bean>
-
-	<!-- test -->
-	<bean id="testController" class="org.springframework.web.servlet.mvc.multiaction.MultiActionController">
-		<property name="delegate" ref="testDelegate"/>
-		<property name="methodNameResolver" ref="testReslver"/>
-	</bean>
-	
-	<bean id="testReslver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
-		<property name="methodParamNames" value="test"/>
-	</bean>
-	
-	<bean id="testDelegate" class="org.poseidon.controller.TestController">
-		<property name="loginService">
-			<ref bean="loginService"/>
+	<!-- spring mvc自定义数据绑定规则 -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+		<property name="webBindingInitializer">
+			<bean class="org.poseidon.controller.base.GenericBindingInitializer"/>
 		</property>
 	</bean>
 </beans>
