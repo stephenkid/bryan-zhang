@@ -69,6 +69,7 @@
 	
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
-	<!-- 扫描带有标注组件的位置 -->
+	<!-- 扫描注入service和listener -->
 	<context:component-scan base-package="org.poseidon.service,org.poseidon.listener"/>
+	
 </beans>
