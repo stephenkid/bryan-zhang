@@ -10,33 +10,36 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingListener;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.Hibernate;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 import org.poseidon.global.PoseidonSession;
 import org.poseidon.listener.OnLineUserSessionBindingListener;
 import org.poseidon.pojo.Login;
 import org.poseidon.service.system.LoginService;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Component;
 
 @Component("loginService")
 public class LoginServiceImpl implements LoginService {
-	@Resource(name = "jdbcTemplate")
-	private JdbcTemplate jdbcTemplate;
 	@Resource(name = "hibernateTemplate")
 	private HibernateTemplate hibernateTemplate;
 	@Resource(name = "onLineUserSessionBindingListener")
 	HttpSessionBindingListener onLineUserSessionBindingListener;
 
-	@SuppressWarnings("unchecked")
-	public String returnLoginMessage(String loginNo, String password) throws Exception {
+	@SuppressWarnings({ "unchecked", "deprecation" })
+	public String returnLoginMessage(String loginEmail, String password) throws Exception {
 		String loginMessage = "success";
-		List<Login> loginList = hibernateTemplate.find("from Login l where upper(l.loginEmail)=? and l.loginPassword=?", new String[] {
-				loginNo.toUpperCase(), password });
+		DetachedCriteria dc =  DetachedCriteria.forClass(Login.class);
+		dc.add(Restrictions.sqlRestriction("upper({alias}.login_email) = ?", loginEmail.toUpperCase(), Hibernate.STRING));
+		dc.add(Restrictions.eq("loginPassword", password));
+		List<Login> loginList = hibernateTemplate.findByCriteria(dc);
+		
 		if (loginList.size() == 0) {
 			loginMessage = "wrongLogin";
 		} else if ("0".equals(loginList.get(0).getIsAvail())) {
 			loginMessage = "invalidLogin";
-		} else if (OnLineUserSessionBindingListener.isLogin(loginNo)) {
+		} else if (OnLineUserSessionBindingListener.isLogin(loginEmail)) {
 			loginMessage = "hasLogined";
 		}
 		return loginMessage;
@@ -64,9 +67,18 @@ public class LoginServiceImpl implements LoginService {
 		session.setAttribute("poseidonSession", poseidonSession);
 		session.setAttribute(poseidonSession.getLogin().getLoginEmail(), onLineUserSessionBindingListener);
 	}
+	
+	public void addLogin(Login login) throws Exception{
+		hibernateTemplate.save(login);
+	}
+	
+	/***************************************************private method****************************************************/
 
+	@SuppressWarnings({ "unchecked", "deprecation" })
 	private Login getLogin(String loginEmail) {
-		List<Login> loginList = hibernateTemplate.find("from Login l where upper(l.loginEmail)=?", new String[] { loginEmail.toUpperCase() });
+		DetachedCriteria dc =  DetachedCriteria.forClass(Login.class);
+		dc.add(Restrictions.sqlRestriction("upper({alias}.login_email) = ?", loginEmail.toUpperCase(), Hibernate.STRING));
+		List<Login> loginList = hibernateTemplate.findByCriteria(dc);
 		Login login = null;
 		if (!(loginList.isEmpty())) {
 			login = loginList.get(0);
@@ -74,7 +86,5 @@ public class LoginServiceImpl implements LoginService {
 		return login;
 	}
 	
-	public void addLogin(Login login) throws Exception{
-		hibernateTemplate.save(login);
-	}
+	
 }
