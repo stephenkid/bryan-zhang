@@ -29,12 +29,4 @@ public class TestController extends BaseController {
 		System.out.println(dto.getTestStringArray());
 		return null;
 	}
-
-	public LoginService getLoginService() {
-		return loginService;
-	}
-
-	public void setLoginService(LoginService loginService) {
-		this.loginService = loginService;
-	}
 }

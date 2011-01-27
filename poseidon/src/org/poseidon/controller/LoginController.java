@@ -39,12 +39,4 @@ public class LoginController extends BaseController {
 		request.getSession().invalidate();
 		return null;
 	}
-
-	public LoginService getLoginService() {
-		return loginService;
-	}
-
-	public void setLoginService(LoginService loginService) {
-		this.loginService = loginService;
-	}
 }
