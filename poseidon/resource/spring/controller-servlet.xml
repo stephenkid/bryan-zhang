@@ -17,4 +17,9 @@
 			<bean class="org.poseidon.controller.base.GenericBindingInitializer"/>
 		</property>
 	</bean>
+	
+	<!-- spring mvc异常处理器 -->
+	<bean name="handlerExResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="defaultErrorView" value="/error.jsp"/>
+	</bean>
 </beans>
