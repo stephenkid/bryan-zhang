@@ -55,7 +55,6 @@ public class PoiUtil {
 		return xlsModel;
 	}
 
-	@SuppressWarnings("deprecation")
 	private static void readValue(Object[][] xlsModel, int y, int x, HSSFCell cell, HSSFFormulaEvaluator evaluator) {
 		if (cell != null) {
 			switch (cell.getCellType()) {
