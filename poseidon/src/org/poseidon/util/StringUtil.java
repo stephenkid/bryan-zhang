@@ -3,37 +3,12 @@ package org.poseidon.util;
 import java.io.UnsupportedEncodingException;
 
 import org.ajaxanywhere.AAUtils;
+import org.apache.commons.lang.StringUtils;
 
-/**
- * 一些与字符串处理有关的方法
- * <p>
- * Title: 服务管理框架
- * </p>
- * <p>
- * Description: Inforise Service Mansgement Framework
- * </p>
- * <p>
- * Copyright: Copyright (c) 2003
- * </p>
- * <p>
- * Company: Infowise
- * </p>
- * 
- * @author jamie
- * @version 1.0
- */
 public class StringUtil {
 	/**
 	 * 把给定的字符串用给定的字符串在前面扩展到指定长度 如果等待扩展的字符串本来就长过目标长度,截断
 	 * 如果fillStr长度不是0，那么返回不超过length的填充字符串
-	 * 
-	 * @param value
-	 *            等待扩展的字符串
-	 * @param length
-	 *            目标长度
-	 * @param fillStr
-	 *            填充字符串
-	 * @return
 	 */
 	public static String fillString(String fillStr, String value, int length) {
 		int i = length - value.length();
@@ -54,10 +29,6 @@ public class StringUtil {
 
 	/**
 	 * 返回给定字符串重复次数后的字符串
-	 * 
-	 * @param str
-	 * @param repeat
-	 * @return
 	 */
 	public static String repeatString(String str, int repeat) {
 		StringBuffer sb = new StringBuffer(str.length() * repeat);
@@ -70,11 +41,6 @@ public class StringUtil {
 
 	/**
 	 * 字符串替换，将字符串中的某一子串替换成另一子串
-	 * 
-	 * @param str
-	 * @param replaceStr
-	 * @param replaceWithStr
-	 * @return
 	 */
 
 	public static String replaceString(String str, String replaceStr,
@@ -114,10 +80,6 @@ public class StringUtil {
 
 	/**
 	 * 时间间隔字符串
-	 * 
-	 * @param beginDate
-	 * @param endDate
-	 * @return ××天××小时××分××秒
 	 */
 	public final static String getBetweenStr(java.util.Date beginDate,
 			java.util.Date endDate) {
@@ -148,16 +110,7 @@ public class StringUtil {
 	}
 
 	/**
-	 * <p>
 	 * 把字符打散转换成自定义的格式，用于解决网页上汉字乱码
-	 * 
-	 * @param str
-	 *            字符串
-	 * @param from
-	 *            字符集名
-	 * @param to
-	 *            字符集名
-	 * @return 截取后得到的字符
 	 */
 	public static String getEncodeStr(String str, String from, String to) {
 		String strUtf8 = null;
@@ -222,9 +175,16 @@ public class StringUtil {
 		}
 	}
 	
+	public static String getMethodPar(String methodName){
+		String parName = null;
+		if (StringUtils.isNotEmpty(methodName)){
+			parName = methodName.substring(3,4).toLowerCase() + methodName.substring(4);
+		}
+		return parName;
+	}
+	
 	public static void main(String args[]) {
-		String str = "asdfad\nkjskdjf";
-		System.out.println(str);
-		System.out.println(StringUtil.replaceSpecialWords(2, str));
+		String str = "getAddress";
+		System.out.println(getMethodPar(str));
 	}
 }
