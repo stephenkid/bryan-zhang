@@ -3,7 +3,6 @@ package org.poseidon.util;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,9 +11,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.Map.Entry;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
@@ -27,7 +23,10 @@ import org.poseidon.pojo.Login;
 
 public class PoiUtil {
 	private static boolean isAccountFormula = true;
-
+	
+	/**
+	 * 从文件路径中读取xls的内容，以object二维数组形式返回
+	 */
 	public static Object[][] readSheet(String fileName, int sheetNum) {
 		Object[][] xlsModel = null;
 		try{
@@ -42,6 +41,9 @@ public class PoiUtil {
 		return xlsModel;
 	}
 	
+	/**
+	 * 从HSSFWorkbook中读取xls内容，以object二维数组形式返回
+	 */
 	public static Object[][] readSheet(HSSFWorkbook wb, int sheetNum) {
 		Object[][] xlsModel = null;
 		String tableName = wb.getSheetName(sheetNum);
@@ -73,6 +75,9 @@ public class PoiUtil {
 		return xlsModel;
 	}
 
+	/**
+	 * 把list转换成HSSFWorkbook对象,内部支持pojo和map
+	 */
 	public static HSSFWorkbook list2Xls(List<?> dataList, LinkedHashMap<String, String> headMap){
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFRow curRow = null;
@@ -88,22 +93,46 @@ public class PoiUtil {
 		}
 		
 		//写入主数据
+		Object valueObj = null;
+		Map<String, ?> mapItem = null;
 		for(Object dataObj : dataList){
 			curRow = sheet.createRow(rowCnt++);
 			colCnt = 0;
-			for (Method m : dataObj.getClass().getMethods()){
-				if (m.getName().indexOf("get") == 0) {
-					if (headMap.keySet().contains(StringUtil.getMethodPar(m.getName()))){
-						try {
-							curRow.createCell(colCnt++).setCellValue(new HSSFRichTextString(m.invoke(dataObj).toString()));
-						} catch (Exception e) {
-							e.printStackTrace();
-							curRow.createCell(colCnt++).setCellValue(new HSSFRichTextString());
-						} 
+			
+			if (dataObj instanceof Map){
+				mapItem = (Map<String, ?>)dataObj;
+				for (it = headMap.keySet().iterator(); it.hasNext();) {
+					try{
+						valueObj = mapItem.get(it.next());
+						if (valueObj instanceof Date){
+							curRow.createCell(colCnt).setCellValue(new HSSFRichTextString(DateUtil.dateToStr((Date)valueObj)));
+						}else{
+							curRow.createCell(colCnt).setCellValue(new HSSFRichTextString(valueObj.toString()));
+						}
+					}catch (Exception e){
+						curRow.createCell(colCnt).setCellValue(new HSSFRichTextString());
+					}
+					colCnt++;
+				}
+			}else{
+				for (Method m : dataObj.getClass().getMethods()){
+					if (m.getName().indexOf("get") == 0) {
+						if (headMap.keySet().contains(StringUtil.getMethodPar(m.getName()))){
+							try {
+								valueObj = m.invoke(dataObj);
+								if (valueObj instanceof Date){
+									curRow.createCell(colCnt).setCellValue(new HSSFRichTextString(DateUtil.dateToStr((Date)valueObj)));
+								}else{
+									curRow.createCell(colCnt).setCellValue(new HSSFRichTextString(valueObj.toString()));
+								}
+							} catch (Exception e) {
+								curRow.createCell(colCnt).setCellValue(new HSSFRichTextString());
+							}
+							colCnt++;
+						}
 					}
 				}
 			}
-			
 		}
 		return wb;
 	}
@@ -115,7 +144,6 @@ public class PoiUtil {
 		if (cell != null) {
 			switch (cell.getCellType()) {
 			case HSSFCell.CELL_TYPE_STRING:// String
-				//xlsModel[y][x] = cell.getStringCellValue();
 				xlsModel[y][x] = cell.getRichStringCellValue().getString();
 				break;
 			case HSSFCell.CELL_TYPE_NUMERIC:// double
@@ -132,7 +160,6 @@ public class PoiUtil {
 						xlsModel[y][x] = new Double(cellValue.getNumberValue());
 						break;
 					case HSSFCell.CELL_TYPE_ERROR:// byte
-						// xlsModel[y][x] = new Byte(cellValue.getErrorValue());
 						if (!Double.isNaN(cell.getNumericCellValue())) {
 							xlsModel[y][x] = new Double(cell.getNumericCellValue());
 						} else if (!"".equals(xlsModel[y][x] = cell.getRichStringCellValue().getString())) {
@@ -168,31 +195,33 @@ public class PoiUtil {
 	}
 	
 	public static void main(String[] args) {
-		List<Login> dataList = new ArrayList<Login>();
-		Login login = new Login("test@163.com", 
-				"111111", 
-				"testName", 
-				"65000000", 
-				"137000000", 
-				"address", 
-				"12343", 
-				true, 
-				new Date(), 
-				new Date(), 
-				"这是备注");
-		dataList.add(login);
-		login = new Login("test2@163.com", 
-				"34343", 
-				"testname 222", 
-				"6500454", 
-				"1370004540", 
-				"dizhi", 
-				"d4545", 
-				true, 
-				new Date(), 
-				new Date(), 
-				"这是备注2");
-		dataList.add(login);
+		List dataList = new ArrayList();
+		
+		Map dataItem = new HashMap();
+		dataItem.put("loginEmail", "we@163.com");
+		dataItem.put("loginPassword", "111111");
+		dataItem.put("loginName", "张三");
+		dataItem.put("telephone", "1234567");
+		dataItem.put("mobile", "13764095731");
+		dataItem.put("address", "xx路xx街");
+		dataItem.put("tax", "sdfd454");
+		dataItem.put("isAvail", true);
+		dataItem.put("inputDate", new Date());
+		dataItem.put("memo", "这是备注");
+		dataList.add(dataItem);
+		
+		dataItem = new HashMap();
+		dataItem.put("loginEmail", "we2@163.com");
+		dataItem.put("loginPassword", "114441");
+		dataItem.put("loginName", "李四");
+		dataItem.put("telephone", "1244467");
+		dataItem.put("mobile", "13764095731");
+		dataItem.put("address", "xx路xx街");
+		dataItem.put("tax", "ttttt");
+		dataItem.put("isAvail", false);
+		dataItem.put("inputDate", null);
+		dataItem.put("memo", "这是备注12");
+		dataList.add(dataItem);
 		
 		LinkedHashMap<String, String> headMap = new LinkedHashMap<String, String>();
 		headMap.put("loginEmail", "登陆名");
