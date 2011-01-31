@@ -15,9 +15,6 @@ import org.springframework.web.context.request.WebRequest;
 public class GenericBindingInitializer implements WebBindingInitializer {
 
 	public void initBinder(WebDataBinder binder, WebRequest request) {
-		SimpleDateFormat dateFormat = null;
-		dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, new PoseidonDateEditor(new DateFormat[]{new SimpleDateFormat("yyyy-MM-dd"),
 																						new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")}, 
 																						true));
