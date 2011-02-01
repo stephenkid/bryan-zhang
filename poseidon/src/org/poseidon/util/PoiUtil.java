@@ -1,8 +1,11 @@
 package org.poseidon.util;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,13 +16,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator.CellValue;
-import org.poseidon.pojo.Login;
 
 public class PoiUtil {
 	private static boolean isAccountFormula = true;
@@ -81,6 +84,7 @@ public class PoiUtil {
 	public static HSSFWorkbook list2Xls(List<?> dataList, LinkedHashMap<String, String> headMap){
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFRow curRow = null;
+		HSSFCell cell = null;
 		int rowCnt = 0;
 		int colCnt = 0;
 		HSSFSheet sheet = wb.createSheet();
@@ -89,7 +93,8 @@ public class PoiUtil {
 		curRow = sheet.createRow(rowCnt++);
 		Iterator<String> it = headMap.values().iterator();
 		while(it.hasNext()){
-			curRow.createCell(colCnt++).setCellValue(new HSSFRichTextString(it.next()));
+			cell = curRow.createCell(colCnt++);
+			cell.setCellValue(new HSSFRichTextString(it.next()));
 		}
 		
 		//写入主数据
@@ -99,6 +104,7 @@ public class PoiUtil {
 			curRow = sheet.createRow(rowCnt++);
 			colCnt = 0;
 			
+			//针对spring的jdbctemplate和 hibernatetemplate所返回的item类型进行处理
 			if (dataObj instanceof Map){
 				mapItem = (Map<String, ?>)dataObj;
 				for (it = headMap.keySet().iterator(); it.hasNext();) {
@@ -135,6 +141,31 @@ public class PoiUtil {
 			}
 		}
 		return wb;
+	}
+	
+	
+	/**
+	 * 把list写入文件,内部支持pojo和map
+	 */
+	public static boolean list2XlsFile(List<?> dataList, LinkedHashMap<String, String> headMap, String path){
+		boolean flag = true;
+		OutputStream os = null;
+		try{
+			HSSFWorkbook wb = list2Xls(dataList, headMap);
+			os = new FileOutputStream(new File(path));
+			wb.write(os);
+		}catch(Exception e){
+			e.printStackTrace();
+			flag = false;
+		}finally{
+			try {
+				os.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+				flag = false;
+			}
+		}
+		return flag;
 	}
 	
 	
@@ -194,6 +225,12 @@ public class PoiUtil {
 		}
 	}
 	
+	private class XlsHeadInfo{
+		private String paramName;
+		
+		private String headName;
+	}
+	
 	public static void main(String[] args) {
 		List dataList = new ArrayList();
 		
@@ -230,16 +267,18 @@ public class PoiUtil {
 		headMap.put("isAvail", "是否有效");
 		headMap.put("inputDate", "放入日期");
 		headMap.put("memo", "备注");
-		HSSFWorkbook wb = list2Xls(dataList, headMap);
 		
 		
-		Object[][] data = readSheet(wb, 0);
-		for (Object[] lineData : data){
-			for(Object obj : lineData){
-				System.out.print(obj);
+		boolean flag = list2XlsFile(dataList, headMap,"c:/temp.xls");
+		
+		Object[][] data = readSheet("c:/temp.xls", 0);
+		for (Object[] line : data){
+			for(Object item : line){
+				System.out.print(item);
 				System.out.print("\t");
 			}
 			System.out.print("\n");
 		}
+		
 	}
 }
