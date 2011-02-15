@@ -16,32 +16,38 @@
 		<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
 		<script type="text/javascript">
 			function doRead(){
+				theForm.action = "fileEditor.jsp?type=read";
 				theForm.submit();
 			}
 		</script>
 	</head>
 	<body style="margin:6px;">
 		<%
-			String fileUrl = request.getParameter("fileUrl");
-			String content = null;
-			String errorInfo = null;
-			if (StringUtils.isNotEmpty(fileUrl)){
-				try{
-					content = FileUtil.readFile2String(fileUrl);
-				}catch(IOException e){
-					e.printStackTrace();
-					errorInfo = e.getMessage();
+			String type = request.getParameter("type");
+			if (type == null || type.equals("read")){
+				String readFileUrl = request.getParameter("readFileUrl");
+				String content = null;
+				String errorInfo = null;
+				if (StringUtils.isNotEmpty(readFileUrl)){
+					try{
+						content = FileUtil.readFile2String(readFileUrl);
+					}catch(IOException e){
+						e.printStackTrace();
+						errorInfo = e.getMessage();
+					}
 				}
+				request.setAttribute("readFileUrl",readFileUrl == null?"":readFileUrl);
+				request.setAttribute("content",content == null?"":content);
+				request.setAttribute("errorInfo",errorInfo == null?"":content);
+			}else if(type.equals("write")){
+				
 			}
-			request.setAttribute("fileUrl",fileUrl == null?"":fileUrl);
-			request.setAttribute("content",content == null?"":content);
-			request.setAttribute("errorInfo",errorInfo == null?"":content);
 		%>
 	
 		<form name="theForm" action="fileEditor.jsp" method="post">
 			<table border="0">
 				<tr>
-					<td>文件路径：<input type="text" name="fileUrl" value="<%=request.getAttribute("fileUrl") %>" size="50">
+					<td>文件路径：<input type="text" name="readFileUrl" value="<%=request.getAttribute("readFileUrl") %>" size="50">
 					<input type="button" value="读取" onclick="doRead()"/></td>
 				</tr>
 				<tr>
@@ -56,7 +62,9 @@
 					</tr>
 				</tr>
 				<tr>
-					
+					<td>
+						保存为：<input type="text" name="writeFileUrl" value="<%=request.getAttribute("writeFileUrl") %>" size="50">
+					</td>
 				</tr>
 			</table>
 		</form>
