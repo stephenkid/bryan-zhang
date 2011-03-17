@@ -1,22 +1,25 @@
 package org.poseidon.util;
 
+/**
+ * @author Bryan Zhang
+ * POI组件操作类
+ */
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -60,18 +63,14 @@ public class PoiUtil {
 					colCount = sheet.getRow(y).getLastCellNum();
 		}
 		xlsModel = new Object[rowCount][colCount];
-		// System.out.println(rowCount + "----------------" + colCount);
 
 		for (int y = 0; y < xlsModel.length; y++) {
 			HSSFRow row = sheet.getRow(y);
 			if (row == null)
 				continue;
-			//evaluator.setCurrentRow(row);
 			for (int x = 0; x < xlsModel[y].length; x++) {
 				HSSFCell cell = row.getCell(x);
 				readValue(xlsModel, y, x, cell, evaluator);
-				// System.out.println("(" + y + "," + x + "):" +
-				// xlsModel[y][x]);
 			}
 		}
 
@@ -81,7 +80,8 @@ public class PoiUtil {
 	/**
 	 * 把list转换成HSSFWorkbook对象,内部支持pojo和map
 	 */
-	public static HSSFWorkbook list2Xls(List<?> dataList, LinkedHashMap<String, String> headMap){
+	public static HSSFWorkbook list2Xls(List<?> dataList, LinkedHashMap<String, String> headMap) 
+				throws IllegalArgumentException, IllegalAccessException, InvocationTargetException{
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFRow curRow = null;
 		HSSFCell cell = null;
@@ -108,32 +108,16 @@ public class PoiUtil {
 			if (dataObj instanceof Map){
 				mapItem = (Map<String, ?>)dataObj;
 				for (it = headMap.keySet().iterator(); it.hasNext();) {
-					try{
-						valueObj = mapItem.get(it.next());
-						if (valueObj instanceof Date){
-							curRow.createCell(colCnt).setCellValue(new HSSFRichTextString(DateUtil.dateToStr((Date)valueObj)));
-						}else{
-							curRow.createCell(colCnt).setCellValue(new HSSFRichTextString(valueObj.toString()));
-						}
-					}catch (Exception e){
-						curRow.createCell(colCnt).setCellValue(new HSSFRichTextString());
-					}
+					valueObj = mapItem.get(it.next());
+					setCellValue(curRow, colCnt, valueObj);
 					colCnt++;
 				}
 			}else{
 				for (Method m : dataObj.getClass().getMethods()){
 					if (m.getName().indexOf("get") == 0) {
 						if (headMap.keySet().contains(StringUtil.getMethodPar(m.getName()))){
-							try {
-								valueObj = m.invoke(dataObj);
-								if (valueObj instanceof Date){
-									curRow.createCell(colCnt).setCellValue(new HSSFRichTextString(DateUtil.dateToStr((Date)valueObj)));
-								}else{
-									curRow.createCell(colCnt).setCellValue(new HSSFRichTextString(valueObj.toString()));
-								}
-							} catch (Exception e) {
-								curRow.createCell(colCnt).setCellValue(new HSSFRichTextString());
-							}
+							valueObj = m.invoke(dataObj);
+							setCellValue(curRow, colCnt, valueObj);
 							colCnt++;
 						}
 					}
@@ -225,60 +209,24 @@ public class PoiUtil {
 		}
 	}
 	
-	private class XlsHeadInfo{
-		private String paramName;
-		
-		private String headName;
-	}
 	
-	public static void main(String[] args) {
-		List dataList = new ArrayList();
-		
-		Map dataItem = new HashMap();
-		dataItem.put("loginEmail", "we@163.com");
-		dataItem.put("loginPassword", "111111");
-		dataItem.put("loginName", "张三");
-		dataItem.put("telephone", "1234567");
-		dataItem.put("mobile", "13764095731");
-		dataItem.put("address", "xx路xx街");
-		dataItem.put("tax", "sdfd454");
-		dataItem.put("isAvail", true);
-		dataItem.put("inputDate", new Date());
-		dataItem.put("memo", "这是备注");
-		dataList.add(dataItem);
-		
-		dataItem = new HashMap();
-		dataItem.put("loginEmail", "we2@163.com");
-		dataItem.put("loginPassword", "114441");
-		dataItem.put("loginName", "李四");
-		dataItem.put("telephone", "1244467");
-		dataItem.put("mobile", "13764095731");
-		dataItem.put("address", "xx路xx街");
-		dataItem.put("tax", "ttttt");
-		dataItem.put("isAvail", false);
-		dataItem.put("inputDate", null);
-		dataItem.put("memo", "这是备注12");
-		dataList.add(dataItem);
-		
-		LinkedHashMap<String, String> headMap = new LinkedHashMap<String, String>();
-		headMap.put("loginEmail", "登陆名");
-		headMap.put("loginName", "姓名");
-		headMap.put("telephone", "电话");
-		headMap.put("isAvail", "是否有效");
-		headMap.put("inputDate", "放入日期");
-		headMap.put("memo", "备注");
-		
-		
-		boolean flag = list2XlsFile(dataList, headMap,"c:/temp.xls");
-		
-		Object[][] data = readSheet("c:/temp.xls", 0);
-		for (Object[] line : data){
-			for(Object item : line){
-				System.out.print(item);
-				System.out.print("\t");
+	private static void setCellValue(HSSFRow curRow,int colCnt, Object valueObj){
+		try{
+			if (valueObj instanceof Date){
+				curRow.createCell(colCnt).setCellValue(new HSSFRichTextString(DateUtil.dateToStr((Date)valueObj)));
+			}else if (valueObj instanceof Long){
+				curRow.createCell(colCnt).setCellValue((Long)valueObj);
+			}else if (valueObj instanceof Integer){
+				curRow.createCell(colCnt).setCellValue((Integer)valueObj);
+			}else if (valueObj instanceof Double){
+				curRow.createCell(colCnt).setCellValue((Double)valueObj);
+			}else if (valueObj instanceof Boolean){
+				curRow.createCell(colCnt).setCellValue((Boolean)valueObj);
+			}else{
+				curRow.createCell(colCnt).setCellValue(new HSSFRichTextString(valueObj.toString()));
 			}
-			System.out.print("\n");
+		}catch (Exception e){
+			curRow.createCell(colCnt).setCellValue(new HSSFRichTextString());
 		}
-		
 	}
 }
