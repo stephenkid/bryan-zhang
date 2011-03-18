@@ -24,7 +24,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.poseidon.util.DateUtil;
 import org.poseidon.util.StringUtil;
 
-public class XlsExportImpl<T,O> implements DataExport<T, O> {
+public class XlsExportImpl<T,O extends HSSFWorkbook> implements DataExport<T, O> {
 	/**
 	 * 把list转换成HSSFWorkbook对象,内部支持pojo和map
 	 */
