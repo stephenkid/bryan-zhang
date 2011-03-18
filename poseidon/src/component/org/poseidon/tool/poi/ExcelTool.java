@@ -1,4 +1,4 @@
-package org.poseidon.util;
+package org.poseidon.tool.poi;
 
 /**
  * @author Bryan Zhang
@@ -26,8 +26,10 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator.CellValue;
+import org.poseidon.util.DateUtil;
+import org.poseidon.util.StringUtil;
 
-public class PoiUtil {
+public class ExcelTool {
 	private static boolean isAccountFormula = true;
 	
 	/**
