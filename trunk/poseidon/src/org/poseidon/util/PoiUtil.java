@@ -80,7 +80,7 @@ public class PoiUtil {
 	/**
 	 * 把list转换成HSSFWorkbook对象,内部支持pojo和map
 	 */
-	public static HSSFWorkbook list2Xls(List<?> dataList, LinkedHashMap<String, String> headMap) 
+	public static <T> HSSFWorkbook list2Xls(List<T> dataList, LinkedHashMap<String, String> headMap) 
 				throws IllegalArgumentException, IllegalAccessException, InvocationTargetException{
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFRow curRow = null;
@@ -100,7 +100,7 @@ public class PoiUtil {
 		//写入主数据
 		Object valueObj = null;
 		Map<String, ?> mapItem = null;
-		for(Object dataObj : dataList){
+		for(T dataObj : dataList){
 			curRow = sheet.createRow(rowCnt++);
 			colCnt = 0;
 			
@@ -131,7 +131,7 @@ public class PoiUtil {
 	/**
 	 * 把list写入文件,内部支持pojo和map
 	 */
-	public static boolean list2XlsFile(List<?> dataList, LinkedHashMap<String, String> headMap, String path){
+	public static <T> boolean list2XlsFile(List<T> dataList, LinkedHashMap<String, String> headMap, String path){
 		boolean flag = true;
 		OutputStream os = null;
 		try{
