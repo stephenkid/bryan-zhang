@@ -24,12 +24,12 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.poseidon.util.DateUtil;
 import org.poseidon.util.StringUtil;
 
-public class XlsExportImpl<T,O extends HSSFWorkbook> implements DataExport<T, O> {
+public class XlsExportImpl implements DataExport {
 	/**
 	 * 把list转换成HSSFWorkbook对象,内部支持pojo和map
 	 */
 	@SuppressWarnings("unchecked")
-	public O convertList(List<T> dataList, LinkedHashMap<String, String> headMap) 
+	public <O,T> O convertList(List<T> dataList, LinkedHashMap<String, String> headMap) 
 				throws Exception{
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFRow curRow = null;
@@ -80,7 +80,7 @@ public class XlsExportImpl<T,O extends HSSFWorkbook> implements DataExport<T, O>
 	/**
 	 * 把list写入文件,内部支持pojo和map
 	 */
-	public boolean convertList2File(List<T> dataList, LinkedHashMap<String, String> headMap, String path){
+	public <T> boolean convertList2File(List<T> dataList, LinkedHashMap<String, String> headMap, String path){
 		boolean flag = true;
 		OutputStream os = null;
 		try{

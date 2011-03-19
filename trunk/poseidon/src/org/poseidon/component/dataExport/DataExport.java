@@ -4,17 +4,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 
-public interface DataExport<T,O> {
+public interface DataExport {
 	
 	/**
 	 * 根据原始数据，列头转换成需要的导出对象
 	 */
-	public O convertList(List<T> dataList, LinkedHashMap<String, String> headMap) 
+	public <O,T> O convertList(List<T> dataList, LinkedHashMap<String, String> headMap) 
 		throws Exception;
 
 	/**
 	 * 根据原始数据，列头，文件输出路径转换
 	 */
-	public boolean convertList2File(List<T> dataList, LinkedHashMap<String, String> headMap, String path)
+	public <T> boolean convertList2File(List<T> dataList, LinkedHashMap<String, String> headMap, String path)
 		throws Exception;
 }
