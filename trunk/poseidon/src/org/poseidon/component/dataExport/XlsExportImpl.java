@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -34,16 +36,22 @@ public class XlsExportImpl implements DataExport {
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFRow curRow = null;
 		HSSFCell cell = null;
-		int rowCnt = 0;
-		int colCnt = 0;
+		short rowCnt = 0;
+		short colCnt = 0;
 		HSSFSheet sheet = wb.createSheet();
 		
 		//写入列头
+		HSSFCellStyle style = wb.createCellStyle();
+		HSSFFont font = wb.createFont();
 		curRow = sheet.createRow(rowCnt++);
 		Iterator<String> it = headMap.values().iterator();
 		while(it.hasNext()){
-			cell = curRow.createCell(colCnt++);
+			cell = curRow.createCell(colCnt);
 			cell.setCellValue(new HSSFRichTextString(it.next()));
+			font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+			style.setFont(font);
+			cell.setCellStyle(style);
+			colCnt++;
 		}
 		
 		//写入主数据
@@ -59,6 +67,7 @@ public class XlsExportImpl implements DataExport {
 				for (it = headMap.keySet().iterator(); it.hasNext();) {
 					valueObj = mapItem.get(it.next());
 					setCellValue(curRow, colCnt, valueObj);
+					sheet.autoSizeColumn(colCnt);
 					colCnt++;
 				}
 			}else{
@@ -67,6 +76,7 @@ public class XlsExportImpl implements DataExport {
 						if (headMap.keySet().contains(StringUtil.getMethodPar(m.getName()))){
 							valueObj = m.invoke(dataObj);
 							setCellValue(curRow, colCnt, valueObj);
+							sheet.autoSizeColumn(colCnt);
 							colCnt++;
 						}
 					}
