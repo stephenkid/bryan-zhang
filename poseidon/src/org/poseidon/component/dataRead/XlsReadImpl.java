@@ -1,8 +1,7 @@
 package org.poseidon.component.dataRead;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator;
@@ -11,31 +10,25 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator.CellValue;
 
-public class XlsReadImpl {
+public class XlsReadImpl implements DataRead{
 	private static boolean isAccountFormula = true;
 	
 	/**
 	 * 从文件路径中读取xls的内容，以object二维数组形式返回
 	 */
-	public static Object[][] readSheet(String fileName, int sheetNum) {
+	public Object[][] readSheet(String fileName, int sheetNum) throws Exception{
 		Object[][] xlsModel = null;
-		try{
-			FileInputStream fs = new FileInputStream(fileName);
-			HSSFWorkbook wb = new HSSFWorkbook(fs);
-			xlsModel = readSheet(wb, sheetNum);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		FileInputStream fs = new FileInputStream(fileName);
+		xlsModel = readSheet(fs, sheetNum);
 		return xlsModel;
 	}
 	
 	/**
-	 * 从HSSFWorkbook中读取xls内容，以object二维数组形式返回
+	 * 从输入流中读取xls内容，以object二维数组形式返回
 	 */
-	public static Object[][] readSheet(HSSFWorkbook wb, int sheetNum) {
+	public Object[][] readSheet(InputStream is, int sheetNum) throws Exception{
 		Object[][] xlsModel = null;
+		HSSFWorkbook wb = new HSSFWorkbook(is);
 		String tableName = wb.getSheetName(sheetNum);
 		HSSFSheet sheet = wb.getSheet(tableName);
 		HSSFFormulaEvaluator evaluator = new HSSFFormulaEvaluator(wb);
