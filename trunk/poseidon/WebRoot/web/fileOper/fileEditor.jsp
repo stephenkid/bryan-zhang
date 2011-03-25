@@ -19,51 +19,51 @@
 				theForm.action = "fileEditor.jsp?type=read";
 				theForm.submit();
 			}
+
+			function doWrite(){
+				theForm.action = "fileEditor.jsp?type=write";
+				theForm.submit();
+			}
 		</script>
 	</head>
 	<body style="margin:6px;">
 		<%
 			String type = request.getParameter("type");
-			if (type == null || type.equals("read")){
-				String readFileUrl = request.getParameter("readFileUrl");
-				String content = null;
-				String errorInfo = null;
+			String readFileUrl = request.getParameter("readFileUrl");
+			String writeFileUrl = request.getParameter("writeFileUrl");
+			String content = request.getParameter("content");
+			
+			if (type != null && type.equals("read")){
 				if (StringUtils.isNotEmpty(readFileUrl)){
-					try{
-						content = FileUtil.readFile2String(readFileUrl);
-					}catch(IOException e){
-						e.printStackTrace();
-						errorInfo = e.getMessage();
-					}
+					content = FileUtil.readFile2String(readFileUrl);
 				}
-				request.setAttribute("readFileUrl",readFileUrl == null?"":readFileUrl);
-				request.setAttribute("content",content == null?"":content);
-				request.setAttribute("errorInfo",errorInfo == null?"":content);
-			}else if(type.equals("write")){
-				
+			}else if(type != null && type.equals("write")){
+				if (StringUtils.isNotEmpty(writeFileUrl)){
+					FileUtil.writeString2File(content,writeFileUrl);
+				}
 			}
+			
+			request.setAttribute("readFileUrl",readFileUrl == null?"":readFileUrl);
+			request.setAttribute("writeFileUrl",writeFileUrl == null?"":writeFileUrl);
+			request.setAttribute("content",content == null?"":content);
 		%>
 	
 		<form name="theForm" action="fileEditor.jsp" method="post">
 			<table border="0">
 				<tr>
 					<td>文件路径：<input type="text" name="readFileUrl" value="<%=request.getAttribute("readFileUrl") %>" size="50">
-					<input type="button" value="读取" onclick="doRead()"/></td>
+					<input type="button" value="读取" onclick="doRead();"/></td>
 				</tr>
 				<tr>
-					<td><font color="red"><%=request.getAttribute("errorInfo") %></font></td>
+					<td>文件内容：</td>
 				</tr>
 				<tr>
-					<tr>
-						<td>文件内容：</td>
-					</tr>
-					<tr>
-						<td><textarea rows="30" cols="100"><%=request.getAttribute("content") %></textarea></td>
-					</tr>
+					<td><textarea name="content" rows="30" cols="100"><%=request.getAttribute("content") %></textarea></td>
 				</tr>
 				<tr>
 					<td>
 						保存为：<input type="text" name="writeFileUrl" value="<%=request.getAttribute("writeFileUrl") %>" size="50">
+						<input type="button" value="保存" onclick="doWrite();">
 					</td>
 				</tr>
 			</table>
