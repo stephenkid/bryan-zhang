@@ -13,6 +13,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.Charset;   
 import java.util.ArrayList;   
 import java.util.List;   
+
+import org.apache.commons.io.output.FileWriterWithEncoding;
   
 /**  
 * 读取文件工具类  
@@ -51,7 +53,7 @@ public class FileUtil {
        
     public static String readInputStream2String(InputStream is)   
             throws IOException {   
-        return readInputStream2String(is, Charset.defaultCharset().name());   
+        return readInputStream2String(is, "UTF-8"); 
     }   
        
     public static String readInputStream2String(InputStream is, String charset)   
@@ -100,7 +102,7 @@ public class FileUtil {
             throws IOException {   
         BufferedWriter bw = null;   
         try {
-            bw = new BufferedWriter(new FileWriter(file));   
+            bw = new BufferedWriter(new FileWriterWithEncoding(file, "UTF-8"));   
             bw.write(str);
             bw.flush();
         } finally {   
