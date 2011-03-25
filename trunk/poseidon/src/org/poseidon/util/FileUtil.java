@@ -101,7 +101,8 @@ public class FileUtil {
         BufferedWriter bw = null;   
         try {
             bw = new BufferedWriter(new FileWriter(file));   
-            bw.write(str);   
+            bw.write(str);
+            bw.flush();
         } finally {   
             closeIO(bw);   
         }   
