@@ -1,4 +1,4 @@
-package org.neptune.designPattern.defaultAdapter;
+package org.neptune.designPattern.adapter.defaultAdapter;
 
 public interface IService {
 	public void operateMethodA();
