@@ -183,8 +183,24 @@ public class StringUtil {
 		return parName;
 	}
 	
+	private static String toCamelize(String str){
+		StringBuffer result = new StringBuffer("");
+		String[] elems = str.split("_");
+		String appendStr = null;
+		for (int i = 0; i < elems.length; i++){
+			elems[i] = elems[i].toLowerCase();
+			if (i > 0){
+				appendStr = elems[i].substring(0, 1).toUpperCase() + elems[i].substring(1);
+			}else{
+				appendStr = elems[i];
+			}
+			result.append(appendStr);
+		}
+		return result.toString();
+	}
+	
 	public static void main(String args[]) {
-		String str = "getAddress";
-		System.out.println(getMethodPar(str));
+		String str = "OUR_ADDRESS_IS_SO_FAR";
+		System.out.println(toCamelize(str));
 	}
 }
