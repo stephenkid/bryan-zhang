@@ -21,6 +21,12 @@ public class CopyFile
     ByteBuffer buffer = ByteBuffer.allocate( 1024 );
 
     while (true) {
+    	
+      /**
+       * clear做了2件事情
+       * 它将 limit 设置为与 capacity 相同
+       * 它设置 position 为 0
+       */
       buffer.clear();
 
       int r = fcin.read( buffer );
