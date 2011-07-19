@@ -1,4 +1,4 @@
-package org.neptune.designPattern.concurrent;
+package org.neptune.learning.concurrent;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import java.util.Date;

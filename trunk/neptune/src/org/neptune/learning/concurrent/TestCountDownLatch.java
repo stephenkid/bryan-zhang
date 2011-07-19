@@ -1,4 +1,4 @@
-package org.neptune.designPattern.concurrent;
+package org.neptune.learning.concurrent;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;

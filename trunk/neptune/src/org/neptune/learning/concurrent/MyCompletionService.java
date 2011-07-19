@@ -1,4 +1,4 @@
-package org.neptune.designPattern.concurrent;
+package org.neptune.learning.concurrent;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;

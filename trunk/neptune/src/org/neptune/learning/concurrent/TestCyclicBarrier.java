@@ -1,4 +1,4 @@
-package org.neptune.designPattern.concurrent;
+package org.neptune.learning.concurrent;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
