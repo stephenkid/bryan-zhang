@@ -29,7 +29,12 @@ public class CopyFile
         break;
       }
 
-      buffer.flip();//像指针一样的东西，把缓冲区的读取位置归零，这样就可以把缓冲区里的所有都写进去了。
+      /**
+       * flip做了2件事情
+       * 它将 limit 设置为当前 position，它将 position 设置为 0
+       * 这个就像指针一样的，确保能读到以前所有的数据，并且一个也不多读
+       */
+      buffer.flip();
 
       fcout.write( buffer );
     }
