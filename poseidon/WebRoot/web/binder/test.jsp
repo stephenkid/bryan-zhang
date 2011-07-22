@@ -10,21 +10,22 @@
 		<meta http-equiv="Cache-Control" content="no-store"/>
 		<meta http-equiv="Pragma" content="no-cache"/>
 		<meta http-equiv="Expires" content="0"/>
+		<%@include file="/web/style.jsp" %>
 	</head>
 	<body style="margin:6px;">
 		<form name="theForm" action="${pageContext.request.contextPath}/testAction.do?action=test" method="post">
 			<table border="0">
 				<tr>
-					<td>testString:<input type="text" name="testString"/></td>
+					<td>testString:<input class="easyui-validatebox" type="text" name="testString" required="true"/></td>
 				</tr>
 				<tr>
-					<td>testDate:<input type="text" name="testDate"/></td>
+					<td>testDate:<input class="easyui-validatebox" type="text" name="testDate" required="true"/></td>
 				</tr>
 				<tr>
-					<td>testLong:<input type="text" name="testLong"/></td>
+					<td>testLong:<input class="easyui-validatebox" type="text" name="testLong" required="true"/></td>
 				</tr>
 				<tr>
-					<td>testBoo:<input type="text" name="testBoo"/></td>
+					<td>testBoo:<input class="easyui-validatebox" type="text" name="testBoo" required="true"/></td>
 				</tr>
 				<tr>
 					<td>
