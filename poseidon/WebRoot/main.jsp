@@ -33,6 +33,10 @@
 		<a href="${pageContext.request.contextPath}/web/binder/test.jsp" target="appFrame"><font size="2">数据Form绑定</font></a>
 		&nbsp;
 		<a href="${pageContext.request.contextPath}/web/fileOper/fileEditor.jsp" target="appFrame"><font size="2">文件修改</font></a>
+		&nbsp;
+		<a href="${pageContext.request.contextPath}/web/download/demo1.jsp" target="appFrame"><font size="2">文件下载demo1</font></a>
+		
+		
 		<hr>
 		<iframe id="appFrame" name="appFrame" style="position:absolute;top:50pt;left:0px;height:100%;width:100%;background-color:#000;" frameborder="0"/>
 	</body>
