@@ -2,17 +2,13 @@
 <%@page import="org.apache.commons.lang.StringUtils"%>
 <%@page import="org.poseidon.util.FileUtil"%>
 <%@page import="java.io.IOException"%>
-
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-
 <html>
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<meta http-equiv="Cache-Control" content="no-store"/>
 		<meta http-equiv="Pragma" content="no-cache"/>
 		<meta http-equiv="Expires" content="0"/>
+		<%@include file="/web/style.jsp" %>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
 		<script type="text/javascript">
 			function doRead(){
