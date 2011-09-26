@@ -1,4 +1,4 @@
-package org.poseidon.service.system;
+package org.poseidon.service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

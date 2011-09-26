@@ -18,10 +18,10 @@ public class DownloadController extends BaseController {
 
 	@RequestMapping(params = "action=testDownload1")
 	public ModelAndView testDownload1(HttpServletRequest request,HttpServletResponse response) throws Exception {
-		URL url = new URL("http://file.ule.tom.com/file/app_price/file20110923/ad2700000935.pdf");
+		URL url = new URL("http://www.baidu.com");
 		InputStream is = url.openStream();
 	
-		response.setHeader("Content-Disposition","attachment;filename=demo.pdf");
+		response.setHeader("Content-Disposition","attachment;filename=demo.txt");
 		OutputStream out = response.getOutputStream();
 
 		int n = 0;
