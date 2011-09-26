@@ -1,8 +1,8 @@
 package org.poseidon.controller;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URL;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,26 +17,21 @@ import org.springframework.web.servlet.ModelAndView;
 public class DownloadController extends BaseController {
 
 	@RequestMapping(params = "action=testDownload1")
-	public ModelAndView testDownload1(HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
-		request.getRealPath("/");
-		
-		
-		File file = new File(request.getRealPath("/") + "/web/download/demo.xls");
-		FileInputStream fis = new FileInputStream(file);
-
-		response.setContentType("application/vnd.ms-excel;charset=utf-8");
-		response.setHeader("Content-Disposition","attachment;filename=demo.xls");
+	public ModelAndView testDownload1(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		URL url = new URL("http://file.ule.tom.com/file/app_price/file20110923/ad2700000935.pdf");
+		InputStream is = url.openStream();
+	
+		response.setHeader("Content-Disposition","attachment;filename=demo.pdf");
 		OutputStream out = response.getOutputStream();
 
 		int n = 0;
-		byte b[] = new byte[4*1024];
-		while ((n = fis.read(b)) != -1) {
+		byte b[] = new byte[2*1024];
+		while ((n = is.read(b)) != -1) {
 			out.write(b, 0, n);
 		}
 		out.flush();
 		out.close();
-		fis.close();
+		is.close();
 		return null;
 	}
 }
