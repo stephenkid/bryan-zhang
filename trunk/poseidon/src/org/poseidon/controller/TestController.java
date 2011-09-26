@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.poseidon.controller.base.BaseController;
 import org.poseidon.dto.TestDto;
-import org.poseidon.service.system.LoginService;
+import org.poseidon.service.LoginService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;

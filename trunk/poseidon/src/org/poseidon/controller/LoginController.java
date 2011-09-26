@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.poseidon.controller.base.BaseController;
-import org.poseidon.service.system.LoginService;
+import org.poseidon.service.LoginService;
 import org.poseidon.util.ServletUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

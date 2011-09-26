@@ -1,4 +1,4 @@
-package org.poseidon.service.system.impl;
+package org.poseidon.service.impl;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ import org.hibernate.criterion.Restrictions;
 import org.poseidon.global.PoseidonSession;
 import org.poseidon.listener.OnLineUserSessionBindingListener;
 import org.poseidon.pojo.Login;
-import org.poseidon.service.system.LoginService;
+import org.poseidon.service.LoginService;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Component;
 

@@ -6,10 +6,13 @@
 		<meta http-equiv="Pragma" content="no-cache"/>
 		<meta http-equiv="Expires" content="0"/>
 		<%@include file="/web/style.jsp" %>
+		<script type="text/javascript">
+			function deal1(){
+				self.location.href="${pageContext.request.contextPath}/downloadAction.do?action=testDownload1";
+			}
+		</script>
 	</head>
 	<body style="margin:6px;">
-		<form name="theForm" action="${pageContext.request.contextPath}/downloadAction.do?action=testDownload1" method="post">
-			<input type="submit" value="submit">
-		</form>
+		<input type="button" value="下载http文件" onclick="deal1();">
 	</body>
 </html>

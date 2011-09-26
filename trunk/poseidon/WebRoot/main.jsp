@@ -34,7 +34,7 @@
 		&nbsp;
 		<a href="${pageContext.request.contextPath}/web/fileOper/fileEditor.jsp" target="appFrame"><font size="2">文件修改</font></a>
 		&nbsp;
-		<a href="${pageContext.request.contextPath}/web/download/demo1.jsp" target="appFrame"><font size="2">文件下载demo1</font></a>
+		<a href="${pageContext.request.contextPath}/web/download/demo1.jsp" target="appFrame"><font size="2">文件下载</font></a>
 		
 		
 		<hr>
