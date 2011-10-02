@@ -4,10 +4,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.poseidon.controller.base.BaseController;
+import org.poseidon.service.DownloadService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,6 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/downloadAction.do")
 public class DownloadController extends BaseController {
 
+	@Resource(name = "downloadService")
+	private DownloadService downloadService;
+	
 	@RequestMapping(params = "action=testDownload1")
 	public ModelAndView testDownload1(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		URL url = new URL("http://www.baidu.com");
@@ -32,6 +37,12 @@ public class DownloadController extends BaseController {
 		out.flush();
 		out.close();
 		is.close();
+		return null;
+	}
+	
+	@RequestMapping(params = "action=createTestData")
+	public ModelAndView createTestData(HttpServletRequest request,HttpServletResponse response) throws Exception {
+		this.downloadService.createTestData();
 		return null;
 	}
 }
