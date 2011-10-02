@@ -1,5 +1,6 @@
 package org.poseidon.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "t_login", catalog = "poseidon")
-public class Login implements java.io.Serializable {
+public class Login implements Serializable {
 
 	private static final long serialVersionUID = -388009660243783191L;
 	
