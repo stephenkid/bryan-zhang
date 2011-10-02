@@ -26,11 +26,11 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.poseidon.util.DateUtil;
 import org.poseidon.util.StringUtil;
 
+@SuppressWarnings({"unchecked","deprecation"})
 public class XlsExportImpl implements DataExport {
 	/**
 	 * 把list转换成HSSFWorkbook对象,内部支持pojo和map
 	 */
-	@SuppressWarnings("unchecked")
 	public <O,T> O convertList(List<T> dataList, LinkedHashMap<String, String> headMap) 
 				throws Exception{
 		HSSFWorkbook wb = new HSSFWorkbook();
