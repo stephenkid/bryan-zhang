@@ -6,17 +6,20 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.LockMode;
 import org.hibernate.criterion.DetachedCriteria;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
-@SuppressWarnings({"unchecked"})
+@SuppressWarnings({"unchecked","unused"})
 public abstract class BaseDAO{
 	private static final Logger log = Logger.getLogger(BaseDAO.class);
 	
 	@Resource(name = "hibernateTemplate")
 	private HibernateTemplate hibernateTemplate;
+	
+	@Resource(name = "jdbcTemplate")
+	private JdbcTemplate jdbcTemplate;
 	
 	protected void initDao() {
 		// do nothing

@@ -19,7 +19,9 @@ import org.poseidon.listener.OnLineUserSessionBindingListener;
 import org.poseidon.pojo.Login;
 import org.poseidon.service.LoginService;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 @SuppressWarnings({"deprecation"})
 @Component("loginService")
 public class LoginServiceImpl implements LoginService {
