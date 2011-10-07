@@ -1,17 +1,4 @@
-/*
-Navicat MySQL Data Transfer
 
-Source Server         : poseidon
-Source Server Version : 50508
-Source Host           : localhost:3306
-Source Database       : poseidon
-
-Target Server Type    : MYSQL
-Target Server Version : 50508
-File Encoding         : 65001
-
-Date: 2011-01-19 16:23:35
-*/
 
 SET FOREIGN_KEY_CHECKS=0;
 
@@ -39,3 +26,20 @@ CREATE TABLE `t_login` (
 -- Records of t_login
 -- ----------------------------
 INSERT INTO `t_login` VALUES ('1', 'root@163.com', '111111', 'root', null, null, null, null, null, null, null, null);
+
+
+-- ----------------------------
+-- Table structure for t_person
+-- ----------------------------
+CREATE TABLE `t_person` (
+  `id` bigint(20) NOT NULL auto_increment,
+  `name` varchar(20) default NULL,
+  `age` int(11) default NULL,
+  `address` varchar(50) default NULL,
+  `mobile` varchar(20) default NULL,
+  `email` varchar(50) default NULL,
+  `company` varchar(50) default NULL,
+  `title` varchar(50) default NULL,
+  `create_time` datetime default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

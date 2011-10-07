@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingListener;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -25,6 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 @SuppressWarnings({"deprecation"})
 @Component("loginService")
 public class LoginServiceImpl implements LoginService {
+	private static final Logger log = Logger.getLogger(LoginServiceImpl.class);
+	
 	@Resource(name = "loginDao")
 	private LoginDao loginDao;
 	
