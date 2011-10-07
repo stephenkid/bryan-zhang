@@ -10,10 +10,9 @@ import org.poseidon.dao.PersonDao;
 import org.poseidon.pojo.Person;
 import org.poseidon.service.DownloadService;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(propagation=Propagation.REQUIRED)
+@Transactional
 @Component("downloadService")
 public class DownloadServiceImpl implements DownloadService {
 	private static final Logger log = Logger.getLogger(DownloadServiceImpl.class);
@@ -22,10 +21,10 @@ public class DownloadServiceImpl implements DownloadService {
 	private PersonDao personDao;
 	
 	
-	public void createTestData() {
+	public void createTestData(){
 		Random random = new Random();
 		Person person = null;
-		for(int i = 0; i < 10; i++){
+		for(int i = 0; i < 2000; i++){
 			person = new Person();
 			person.setAge(random.nextInt(100));
 			person.setAddress("上海市民星路" + i + "号");
@@ -37,11 +36,6 @@ public class DownloadServiceImpl implements DownloadService {
 			person.setTitle("工程师");
 			this.personDao.save(person);
 			log.info("saved" + i);
-			
-			if (i==1){
-				String a = null;
-				System.out.println(a.equals("2"));
-			}
 		}
 	}
 }
