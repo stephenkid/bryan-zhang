@@ -63,11 +63,11 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 
-	<tx:annotation-driven transaction-manager="transactionManager"/>
-
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource"/>
 	</bean>
+	
+	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
 	<!-- 扫描注入service和listener -->
 	<context:component-scan base-package="org.poseidon.dao,
