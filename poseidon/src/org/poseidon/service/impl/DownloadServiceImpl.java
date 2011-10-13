@@ -21,7 +21,7 @@ public class DownloadServiceImpl implements DownloadService {
 	private PersonDao personDao;
 	
 	
-	public void createTestData(){
+	public void createTestData() throws Exception{
 		Random random = new Random();
 		Person person = null;
 		for(int i = 0; i < 2000; i++){
