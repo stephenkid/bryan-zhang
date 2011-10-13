@@ -1,5 +1,5 @@
 package org.poseidon.service;
 
 public interface DownloadService {
-	public void createTestData();
+	public void createTestData() throws Exception;
 }
