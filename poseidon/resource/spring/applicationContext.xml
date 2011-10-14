@@ -72,6 +72,7 @@
 	<!-- 扫描注入service和listener -->
 	<context:component-scan base-package="org.poseidon.dao,
 										  org.poseidon.service,
-										  org.poseidon.listener"/>
+										  org.poseidon.listener,
+										  org.poseidon.component"/>
 	
 </beans>

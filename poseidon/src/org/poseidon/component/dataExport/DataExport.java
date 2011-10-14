@@ -8,15 +8,12 @@ package org.poseidon.component.dataExport;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-
-
 public interface DataExport {
 	
 	/**
 	 * 根据原始数据，列头转换成需要的导出对象
 	 */
-	public <T> HSSFWorkbook convertList(List<T> dataList, LinkedHashMap<String, String> headMap) 
+	public <T,O> O convertList(List<T> dataList, LinkedHashMap<String, String> headMap) 
 		throws Exception;
 
 	/**
