@@ -1,6 +1,7 @@
 package org.poseidon.service.impl;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Resource;
@@ -20,7 +21,6 @@ public class DownloadServiceImpl implements DownloadService {
 	@Resource(name = "personDao")
 	private PersonDao personDao;
 	
-	
 	public void createTestData() throws Exception{
 		Random random = new Random();
 		Person person = null;
@@ -37,5 +37,10 @@ public class DownloadServiceImpl implements DownloadService {
 			this.personDao.save(person);
 			log.info("saved" + i);
 		}
+	}
+	
+	public List<Person> findTotalPerson() throws Exception{
+		List<Person> pList = personDao.findAll("Person");
+		return pList;
 	}
 }

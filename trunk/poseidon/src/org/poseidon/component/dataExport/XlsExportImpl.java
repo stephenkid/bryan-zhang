@@ -25,13 +25,15 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.poseidon.util.DateUtil;
 import org.poseidon.util.StringUtil;
+import org.springframework.stereotype.Component;
 
 @SuppressWarnings({"unchecked","deprecation"})
+@Component("XlsExportImpl")
 public class XlsExportImpl implements DataExport {
 	/**
 	 * 把list转换成HSSFWorkbook对象,内部支持pojo和map
 	 */
-	public <T> HSSFWorkbook convertList(List<T> dataList, LinkedHashMap<String, String> headMap) 
+	public <T,O> O convertList(List<T> dataList, LinkedHashMap<String, String> headMap) 
 				throws Exception{
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFRow curRow = null;
@@ -83,7 +85,7 @@ public class XlsExportImpl implements DataExport {
 				}
 			}
 		}
-		return wb;
+		return (O)wb;
 	}
 	
 	

@@ -9,7 +9,9 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFFormulaEvaluator.CellValue;
+import org.springframework.stereotype.Component;
 
+@Component("XlsReadImpl")
 public class XlsReadImpl implements DataRead{
 	private static boolean isAccountFormula = true;
 	
