@@ -3,15 +3,11 @@ package org.poseidon.controller;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.poseidon.component.dataExport.DataExport;
 import org.poseidon.controller.base.BaseController;
 import org.poseidon.pojo.Person;
 import org.poseidon.service.DownloadService;
@@ -25,9 +21,6 @@ public class DownloadController extends BaseController {
 
 	@Resource(name = "downloadService")
 	private DownloadService downloadService;
-	
-	@Resource(name = "XlsExportImpl")
-	private DataExport dataExport;
 	
 	@RequestMapping(params = "action=testDownload1")
 	public ModelAndView testDownload1(HttpServletRequest request,HttpServletResponse response) throws Exception {
@@ -50,20 +43,7 @@ public class DownloadController extends BaseController {
 	
 	@RequestMapping(params = "action=testDownload2")
 	public ModelAndView testDownload2(HttpServletRequest request,HttpServletResponse response) throws Exception {
-		List<Person> pList = this.downloadService.findTotalPerson();
-
-		LinkedHashMap<String, String> headMap = new LinkedHashMap<String, String>();
-		headMap.put("id", "序号");
-		headMap.put("name", "姓名");
-		headMap.put("age", "年龄");
-		headMap.put("address", "地址");
-		headMap.put("mobile", "手机");
-		headMap.put("email", "电子邮件");
-		headMap.put("company", "公司");
-		headMap.put("title", "职位");
-		headMap.put("createTime", "创建时间");
-		HSSFWorkbook wb = dataExport.convertList(pList, headMap);
-		wb.write(response.getOutputStream());
+		this.downloadService.generateBigDataFile();
 		return null;
 	}
 	

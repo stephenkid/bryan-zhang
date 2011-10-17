@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.poseidon.component.dataExport.DataExport;
 import org.poseidon.dao.PersonDao;
 import org.poseidon.pojo.Person;
 import org.poseidon.service.DownloadService;
@@ -20,6 +21,9 @@ public class DownloadServiceImpl implements DownloadService {
 	
 	@Resource(name = "personDao")
 	private PersonDao personDao;
+	
+	@Resource(name = "XlsExportImpl")
+    private DataExport dataExport;
 	
 	public void createTestData() throws Exception{
 		Random random = new Random();
@@ -42,5 +46,16 @@ public class DownloadServiceImpl implements DownloadService {
 	public List<Person> findTotalPerson() throws Exception{
 		List<Person> pList = personDao.findAll("Person");
 		return pList;
+	}
+	
+	public void generateBigDataFile() throws Exception{
+	    new Thread(){
+            @Override
+            public void run() {
+                String sql = "select * from t_person t where t.id < 100";
+                String path = "d:/bigData.xls";
+                dataExport.generateFileFromSql(sql, null, path);
+            }
+	    }.start();
 	}
 }
