@@ -28,7 +28,7 @@ public class DownloadServiceImpl implements DownloadService {
 	public void createTestData() throws Exception{
 		Random random = new Random();
 		Person person = null;
-		for(int i = 0; i < 2000; i++){
+		for(int i = 0; i < 20001; i++){
 			person = new Person();
 			person.setAge(random.nextInt(100));
 			person.setAddress("上海市民星路" + i + "号");
@@ -36,8 +36,8 @@ public class DownloadServiceImpl implements DownloadService {
 			person.setCreateTime(new Date());
 			person.setEmail("ez_winter31@hotmail.com");
 			person.setMobile("13764095731");
-			person.setName("李四" + i);
-			person.setTitle("工程师");
+			person.setName("钱六" + i);
+			person.setTitle("驾驶员");
 			this.personDao.save(person);
 			log.info("saved" + i);
 		}
@@ -52,8 +52,8 @@ public class DownloadServiceImpl implements DownloadService {
 	    new Thread(){
             @Override
             public void run() {
-                String sql = "select * from t_person t where t.id < 100";
-                String path = "d:/bigData.xls";
+                String sql = "select * from t_person t";
+                String path = "d:/bigData.csv";
                 dataExport.generateFileFromSql(sql, null, path);
             }
 	    }.start();
