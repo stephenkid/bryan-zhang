@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,7 +32,6 @@ import org.poseidon.util.DateUtil;
 import org.poseidon.util.PoiUtil;
 import org.poseidon.util.StringUtil;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Component;
 
@@ -41,6 +41,8 @@ public class XlsExportImpl implements DataExport {
 	
 	@Resource(name = "jdbcTemplate")
 	private JdbcTemplate jdbcTemplate;
+	
+	private static final String CSV_JOIN_STR = ",";
 	
 	/**
 	 * 把list转换成HSSFWorkbook对象,内部支持pojo和map
@@ -130,17 +132,18 @@ public class XlsExportImpl implements DataExport {
 	}
 	
 	/**
-	 * 根据sql生成大容量xls，采用fetch的方式
+	 * 根据sql生成大容量csv格式文件，采用fetch的方式
 	 */
 	public void generateFileFromSql(CharSequence sql, List<Object> argList, String path){
 	    Object[] args = null;
 	    OutputStream os = null;
 		try{
-		    os = new FileOutputStream(new File(path));
+		    os = new FileOutputStream(new File(path), true);
+		    PrintWriter pw = new PrintWriter(os, true);
 		    if (argList != null && argList.isEmpty() == false){
 	            args = argList.toArray();
 	        }
-	        this.jdbcTemplate.query(sql.toString(), args, new XlsRowCallbackHandler(os));
+	        this.jdbcTemplate.query(sql.toString(), args, new CsvRowCallbackHandler(pw));
 		}catch(Exception e){
 		    e.printStackTrace();
 		}finally{
@@ -154,54 +157,51 @@ public class XlsExportImpl implements DataExport {
 	
 	/***************************************************private class*****************************************************/
 	
-	private class XlsRowCallbackHandler implements RowCallbackHandler{
+	private class CsvRowCallbackHandler implements RowCallbackHandler{
 	    
-	    private HSSFWorkbook wb;
 	    
-	    private OutputStream os;
+	    private PrintWriter pw;
 	    
 	    private int rowCnt = 0;
 	    
-	    public XlsRowCallbackHandler(OutputStream os){
-	        this.wb = new HSSFWorkbook();
-	        this.os = os;
-	        
-	        wb.createSheet();
+	    public CsvRowCallbackHandler(PrintWriter pw){
+	        this.pw = pw;
 	    }
 	    
 	    public void processRow(ResultSet rs) throws SQLException {
-            HSSFSheet sheet = wb.getSheetAt(0);
-            HSSFRow curRow = null;
-            HSSFCellStyle style = wb.createCellStyle();
-            HSSFFont font = wb.createFont();
-            System.out.println(this.rowCnt);
-            if (this.rowCnt == 0){
-                curRow = sheet.createRow(this.rowCnt);
-                HSSFCell cell = null;
-                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++){
-                    cell = curRow.createCell(i);
-                    cell.setCellValue(new HSSFRichTextString(rs.getMetaData().getColumnName(i+1)));
-                    font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-                    style.setFont(font);
-                    cell.setCellStyle(style);
+	        if (this.rowCnt == 0){
+	            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++){
+	                if (i == rs.getMetaData().getColumnCount() - 1){
+	                    this.writeToFile(pw, rs.getMetaData().getColumnName(i+1), true);
+	                }else{
+	                    this.writeToFile(pw, rs.getMetaData().getColumnName(i+1), false);
+	                }
                 }
+	            pw.println();
                 this.rowCnt++;
-            }else{
-                curRow = sheet.createRow(this.rowCnt);
-                for (int i = 0; i < rs.getMetaData().getColumnCount(); i++){
-                    PoiUtil.setCellValue(curRow, i, rs.getObject(i+1));
+	        }
+	        for (int i = 0; i < rs.getMetaData().getColumnCount(); i++){
+	            if (i == rs.getMetaData().getColumnCount() - 1){
+	                this.writeToFile(pw, rs.getObject(i+1), true);
+                }else{
+                    this.writeToFile(pw, rs.getObject(i+1), false);
                 }
-                this.rowCnt++;
             }
-            this.writeWorkbook();
+	        pw.println();
+	        this.rowCnt++;
         }
 	    
-	    private void writeWorkbook(){
-	        try {
-                this.wb.write(this.os);
-            } catch (IOException e) {
-                e.printStackTrace();
+	    private void writeToFile(PrintWriter pw, Object valueObj, boolean isLineEnd){
+	        if (valueObj == null) {
+	            pw.print(CSV_JOIN_STR);
+	            return;
+	        }
+	        if (valueObj instanceof Date){
+                pw.print(DateUtil.dateToStr((Date)valueObj));
+            }else{
+                pw.print(valueObj.toString());
             }
+	        if (!isLineEnd) pw.print(CSV_JOIN_STR);
 	    }
 	}
 }
