@@ -190,7 +190,7 @@ public class XlsExportor{
 	    
 	    public void processRow(ResultSet rs) throws SQLException {
 	        if (this.rowCnt == 0){
-	            rs.setFetchSize(1);
+	            rs.setFetchSize(1000);
 	            for (int i = 0; i < rs.getMetaData().getColumnCount(); i++){
 	                if (i == rs.getMetaData().getColumnCount() - 1){
 	                    this.writeToFile(pw, rs.getMetaData().getColumnName(i+1), true);
