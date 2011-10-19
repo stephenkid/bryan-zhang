@@ -183,6 +183,10 @@ public class StringUtil {
 		return parName;
 	}
 	
+	public static String upperFirstChar(String str){
+	    return str.replaceFirst(str.substring(0, 1), str.substring(0, 1).toUpperCase());
+	}
+	
 	private static String toCamelize(String str){
 		StringBuffer result = new StringBuffer("");
 		String[] elems = str.split("_");
@@ -200,7 +204,7 @@ public class StringUtil {
 	}
 	
 	public static void main(String args[]) {
-		String str = "OUR_ADDRESS_IS_SO_FAR";
-		System.out.println(toCamelize(str));
+		String str = "adadff";
+		System.out.println(upperFirstChar(str));
 	}
 }

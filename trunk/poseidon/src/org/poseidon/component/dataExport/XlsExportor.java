@@ -18,6 +18,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.annotation.Resource;
 
@@ -35,9 +36,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Component;
 
-@SuppressWarnings({"unchecked","deprecation"})
-@Component("XlsExportImpl")
-public class XlsExportImpl implements DataExport {
+@SuppressWarnings({"unchecked"})
+@Component("XlsExportor")
+public class XlsExportor{
 	
 	@Resource(name = "jdbcTemplate")
 	private JdbcTemplate jdbcTemplate;
@@ -47,16 +48,29 @@ public class XlsExportImpl implements DataExport {
 	/**
 	 * 把list转换成HSSFWorkbook对象,内部支持pojo和map
 	 */
-	public <T,O> O convertList(List<T> dataList, LinkedHashMap<String, String> headMap){
+	public <T> HSSFWorkbook convertList(List<T> dataList, LinkedHashMap<String, String> headMap, Map<Integer, Integer> colWidthMap, 
+	                                    XlsHeadDeal headDeal, XlsBottomDeal bottomDeal){
 		HSSFWorkbook wb = new HSSFWorkbook();
 		HSSFRow curRow = null;
 		HSSFCell cell = null;
-		short rowCnt = 0;
-		short colCnt = 0;
+		Integer rowCnt = 0;
+		Integer colCnt = 0;
 		HSSFSheet sheet = wb.createSheet();
 		
+		//设置列宽度
+		if (colWidthMap != null){
+		    for (Entry<Integer, Integer> entry : colWidthMap.entrySet()){
+		        sheet.setColumnWidth(entry.getKey(), entry.getValue());
+		    }
+		}
+		
 		try{
-		  //写入列头
+		    //头部处理
+		    if (headDeal != null){
+		        rowCnt = headDeal.dealHead(sheet, rowCnt);
+		    }
+		    
+		    //写入列头
 	        HSSFCellStyle style = wb.createCellStyle();
 	        HSSFFont font = wb.createFont();
 	        curRow = sheet.createRow(rowCnt++);
@@ -83,38 +97,42 @@ public class XlsExportImpl implements DataExport {
 	                for (it = headMap.keySet().iterator(); it.hasNext();) {
 	                    valueObj = mapItem.get(it.next());
 	                    PoiUtil.setCellValue(curRow, colCnt, valueObj);
-	                    sheet.autoSizeColumn(colCnt);
 	                    colCnt++;
 	                }
 	            }else{
-	                for (Method m : dataObj.getClass().getMethods()){
-	                    if (m.getName().indexOf("get") == 0) {
-	                        if (headMap.keySet().contains(StringUtil.getMethodPar(m.getName()))){
-	                            valueObj = m.invoke(dataObj);
-	                            PoiUtil.setCellValue(curRow, colCnt, valueObj);
-	                            sheet.autoSizeColumn(colCnt);
-	                            colCnt++;
-	                        }
+	                for (Entry<String, String> headEntry : headMap.entrySet()){
+	                    Method m = dataObj.getClass().getMethod("get" + StringUtil.upperFirstChar(headEntry.getKey()));
+	                    if (m != null){
+	                        valueObj = m.invoke(dataObj);
+                            PoiUtil.setCellValue(curRow, colCnt, valueObj);
+                            colCnt++;
 	                    }
 	                }
 	            }
+	        }
+	        
+	        //底部处理
+	        if (bottomDeal != null){
+	            rowCnt = bottomDeal.dealBottom(sheet, rowCnt);
 	        }
 		}catch(Exception  e){
 		    e.printStackTrace();
 		    return null;
 		}
-		return (O)wb;
+		return wb;
 	}
 	
 	
 	/**
 	 * 把list写入文件,内部支持pojo和map
 	 */
-	public <T> boolean convertList2File(List<T> dataList, LinkedHashMap<String, String> headMap, String path){
+	public <T> boolean convertList2File(List<T> dataList, LinkedHashMap<String, String> headMap,
+	                                    Map<Integer, Integer> colWidthMap, XlsHeadDeal headDeal, XlsBottomDeal bottomDeal,
+	                                    String path){
 		boolean flag = true;
 		OutputStream os = null;
 		try{
-			HSSFWorkbook wb = (HSSFWorkbook)this.convertList(dataList, headMap);
+			HSSFWorkbook wb = (HSSFWorkbook)this.convertList(dataList, headMap, colWidthMap, headDeal, bottomDeal);
 			os = new FileOutputStream(new File(path));
 			wb.write(os);
 		}catch(Exception e){
@@ -158,7 +176,6 @@ public class XlsExportImpl implements DataExport {
 	/***************************************************private class*****************************************************/
 	
 	private class CsvRowCallbackHandler implements RowCallbackHandler{
-	    
 	    
 	    private PrintWriter pw;
 	    
