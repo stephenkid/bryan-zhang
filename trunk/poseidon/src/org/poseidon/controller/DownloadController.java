@@ -57,7 +57,7 @@ public class DownloadController extends BaseController {
 	
 	@RequestMapping(params = "action=testDownload2")
 	public ModelAndView testDownload2(HttpServletRequest request,HttpServletResponse response) throws Exception {
-	    /*Person cond = new Person();
+	    Person cond = new Person();
 	    cond.setAge(28);
 		List<Person> list = this.downloadService.findPerson(cond);
 		System.out.println(list.size());
@@ -90,17 +90,20 @@ public class DownloadController extends BaseController {
             }
         });
 		response.setHeader("Content-Disposition","attachment;filename=demo.xls");
-		wb.write(response.getOutputStream());*/
-		
-		this.downloadService.generateBigDataFile();
+		wb.write(response.getOutputStream());
 		return null;
 	}
+	
+	@RequestMapping(params = "action=testDownload3")
+    public ModelAndView testDownload3(HttpServletRequest request,HttpServletResponse response) throws Exception {
+	    this.downloadService.generateBigDataFile();
+        return null;
+	}
+	
 	
 	@RequestMapping(params = "action=createTestData")
 	public ModelAndView createTestData(HttpServletRequest request,HttpServletResponse response) throws Exception {
 		this.downloadService.createTestData();
 		return null;
 	}
-	
-	
 }
