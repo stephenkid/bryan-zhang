@@ -2,7 +2,7 @@ package org.poseidon.component.dataExport;
 
 /**
  * @author Bryan Zhang
- * POI导出实现器
+ * xls导出组件
  */
 
 import java.io.File;
