@@ -14,11 +14,17 @@
 			function deal2(){
 				self.location.href="${pageContext.request.contextPath}/downloadAction.do?action=testDownload2";
 			}
+
+			function deal3(){
+				self.location.href="${pageContext.request.contextPath}/downloadAction.do?action=testDownload3";
+			}
 		</script>
 	</head>
 	<body style="margin:6px;">
 		<input type="button" value="下载http文件" onclick="deal1();">
 		<br/>
-		<input type="button" value="下载大容量文件" onclick="deal2();">
+		<input type="button" value="普通下载" onclick="deal2();">
+		<br/>
+		<input type="button" value="大容量下载" onclick="deal3();">
 	</body>
 </html>
