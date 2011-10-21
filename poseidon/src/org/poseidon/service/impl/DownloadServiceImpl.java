@@ -1,5 +1,6 @@
 package org.poseidon.service.impl;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -7,15 +8,13 @@ import java.util.Random;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.nutz.Nutz;
-import org.nutz.filepool.FilePool;
-import org.nutz.filepool.NutFilePool;
 import org.poseidon.component.dataExport.XlsExportor;
 import org.poseidon.dao.DownloadFileDao;
 import org.poseidon.dao.PersonDao;
 import org.poseidon.pojo.DownloadFile;
 import org.poseidon.pojo.Person;
 import org.poseidon.service.DownloadService;
+import org.poseidon.util.PoseidonFilePoool;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +28,9 @@ public class DownloadServiceImpl implements DownloadService {
 	
 	@Resource(name = "downloadFileDao")
     private DownloadFileDao downloadFileDao;
+	
+	@Resource(name = "filePool")
+	private PoseidonFilePoool filePool;
 	
 	@Resource(name = "XlsExportor")
     private XlsExportor XlsExportor;
@@ -64,6 +66,8 @@ public class DownloadServiceImpl implements DownloadService {
                 df.setFileStatus(DownloadFile.FILE_STATUS_PENDING);
                 df.setStartTime(new Date());
                 downloadFileDao.save(df);
+                File f = filePool.createFile("csv");
+                
                 
                 String sql = "select * from t_person t";
                 String path = "d:/bigData.csv";
