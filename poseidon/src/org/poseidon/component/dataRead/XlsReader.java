@@ -22,6 +22,9 @@ public class XlsReader{
 	
 	/**
 	 * 从文件路径中读取xls的内容，以object二维数组形式返回
+	 * @param fileName 文件路径
+	 * @param sheetNum 读取第几个sheet
+	 * @return Object[][] 数组
 	 */
 	public Object[][] readSheet(String fileName, int sheetNum) throws Exception{
 		Object[][] xlsModel = null;
@@ -32,6 +35,9 @@ public class XlsReader{
 	
 	/**
 	 * 从输入流中读取xls内容，以object二维数组形式返回
+	 * @param is 输入流
+	 * @param sheetNum 读取第几个sheet
+	 * @return Object[][] 数组
 	 */
 	public Object[][] readSheet(InputStream is, int sheetNum) throws Exception{
 		Object[][] xlsModel = null;
