@@ -47,6 +47,12 @@ public class XlsExportor{
 	
 	/**
 	 * 把list转换成HSSFWorkbook对象,内部支持pojo和map
+	 * @param dataList 数据集合
+	 * @param headMap 列头集合
+	 * @param colWidthMap 列宽集合
+	 * @param headDeal 头部处理器
+	 * @param bottomDeal 底部处理器
+	 * @return HSSFWorkbook
 	 */
 	public <T> HSSFWorkbook convertList(List<T> dataList, LinkedHashMap<String, String> headMap, Map<Integer, Integer> colWidthMap, 
 	                                    XlsHeadDeal headDeal, XlsBottomDeal bottomDeal){
@@ -125,6 +131,13 @@ public class XlsExportor{
 	
 	/**
 	 * 把list写入文件,内部支持pojo和map
+	 * @param dataList 数据集合
+     * @param headMap 列头集合
+     * @param colWidthMap 列宽集合
+     * @param headDeal 头部处理器
+     * @param bottomDeal 底部处理器
+     * @param path 生成文件的路径
+     * @return boolean 是否写入成功
 	 */
 	public <T> boolean convertList2File(List<T> dataList, LinkedHashMap<String, String> headMap,
 	                                    Map<Integer, Integer> colWidthMap, XlsHeadDeal headDeal, XlsBottomDeal bottomDeal,
@@ -151,6 +164,9 @@ public class XlsExportor{
 	
 	/**
 	 * 根据sql生成大容量csv格式文件，采用fetch的方式
+	 * @param sql sql语句
+	 * @param argList sql预处理参数
+	 * @param path 生成文件的路径
 	 */
 	public void generateFileFromSql(CharSequence sql, List<Object> argList, String path){
 	    Object[] args = null;
