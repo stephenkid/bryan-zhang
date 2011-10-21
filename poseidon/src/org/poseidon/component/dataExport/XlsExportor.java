@@ -166,13 +166,13 @@ public class XlsExportor{
 	 * 根据sql生成大容量csv格式文件，采用fetch的方式
 	 * @param sql sql语句
 	 * @param argList sql预处理参数
-	 * @param path 生成文件的路径
+	 * @param file 生成的文件对象
 	 */
-	public void generateFileFromSql(CharSequence sql, List<Object> argList, String path){
+	public void generateFileFromSql(CharSequence sql, List<Object> argList, File file){
 	    Object[] args = null;
 	    OutputStream os = null;
 		try{
-		    os = new FileOutputStream(new File(path), true);
+		    os = new FileOutputStream(file, true);
 		    PrintWriter pw = new PrintWriter(os, true);
 		    if (argList != null && argList.isEmpty() == false){
 	            args = argList.toArray();
@@ -188,6 +188,16 @@ public class XlsExportor{
             }
 		}
 	}
+	
+	/**
+     * 根据sql生成大容量csv格式文件，采用fetch的方式
+     * @param sql sql语句
+     * @param argList sql预处理参数
+     * @param path 生成文件的路径
+     */
+    public void generateFileFromSql(CharSequence sql, List<Object> argList, String path){
+       this.generateFileFromSql(sql, argList, new File(path));
+    }
 	
 	/***************************************************private class*****************************************************/
 	
