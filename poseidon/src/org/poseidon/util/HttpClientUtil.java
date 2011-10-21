@@ -31,25 +31,12 @@ import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
 import org.apache.commons.httpclient.util.EncodingUtil;
-import org.apache.log4j.Logger;
 
-/**
- * MiscUtil
- * 
- * @author 何晓滨
- * @version 创建时间：Sep 1, 2008 3:00:29 PM
- * Last modify 
- *  by weidong_zhao
- *  on 2009-02-19
- *  for Post/Post(HTTPS)/Get(HTTPS)
- */
 public abstract class HttpClientUtil {
 
-	private static final Logger LOGGER = Logger.getLogger(HttpClientUtil.class);
     private static final int BUFFER_SIZE = 4096;
     
     static{
-    	LoggerUtil.initLogging(LOGGER);
     	//注册 HTTPS 协议
     	ProtocolSocketFactory factory = new Protocol4Https();
         Protocol.registerProtocol("https", new Protocol("https", factory, 443));
@@ -90,7 +77,6 @@ public abstract class HttpClientUtil {
         if (params != null) {
             method.setQueryString(getQueryString(params));
         }
-        LOGGER.debug("SEND [url=" + url + "][params=" + ObjectUtil.getDisplayString(params) + "][timeout=" + timeout + "]");
 
         byte[] content;
         String text = null, charset = null;
@@ -102,8 +88,6 @@ public abstract class HttpClientUtil {
             method.releaseConnection();
         }
         
-        LOGGER.debug("RECV [" + text + "][length=" + (content == null ? 0 : content.length) + "][charset=" + charset + "]");
-
         return text;
     }
     
@@ -123,8 +107,6 @@ public abstract class HttpClientUtil {
         PostMethod method = new PostMethod(url);
         method.setRequestBody(data);
         
-        LOGGER.debug("SEND [url=" + url + "][params=" + ObjectUtil.getDisplayString(data) + "][timeout=" + timeout + "]");
-        
         byte[] content;
         String text = null, charset = null;
         try {
@@ -138,8 +120,6 @@ public abstract class HttpClientUtil {
             method.releaseConnection();
         }
         
-        LOGGER.debug("RECV [" + text + "][length=" + (content == null ? 0 : content.length) + "][charset=" + charset + "]");
-
         return text;
     }
 
