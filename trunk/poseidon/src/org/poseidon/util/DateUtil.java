@@ -303,7 +303,10 @@ public class DateUtil {
 		return "0";
 	}
 	
-    public final static String getBetweenStr(java.util.Date beginDate, java.util.Date endDate) {
+    public final static String getBetweenStr(Date beginDate, Date endDate) {
+        if (beginDate == null || endDate == null){
+            return null;
+        }
         long time = endDate.getTime() - beginDate.getTime();
         long hour = (time / (60 * 60 * 1000));
         long minute =((time / (60 * 1000)) - hour * 60);

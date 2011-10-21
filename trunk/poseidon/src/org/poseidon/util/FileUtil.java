@@ -1,30 +1,29 @@
 package org.poseidon.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;   
 import java.io.BufferedWriter;   
 import java.io.Closeable;   
 import java.io.File;   
 import java.io.FileInputStream;   
+import java.io.FileOutputStream;
 import java.io.FileReader;   
 import java.io.IOException;   
 import java.io.InputStream;   
 import java.io.InputStreamReader;   
 import java.util.ArrayList;   
 import java.util.List;   
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.output.FileWriterWithEncoding;
   
 /**  
 * 读取文件工具类  
-*   
-* @author bao110908  
-* @since 2008-12-14  
 */  
 public class FileUtil {   
        
-    /**  
-     * 行分隔符  
-     */  
     public final static String LINE_SEPARATOR = System.getProperty("line.separator");   
        
     public static boolean createDirectory(File file) {   
@@ -135,15 +134,26 @@ public class FileUtil {
         writeString2File(sb.toString(), file);   
     }   
        
-    /**  
-     * 关闭 IO 流  
-     * @param io  
-     * @throws IOException  
-     */  
     public static void closeIO(Closeable io) throws IOException {   
         if(io != null) {   
             io.close();   
         }   
+    }
+    
+    public static void zipFile(File inFile, File outFile) throws IOException{
+        ZipOutputStream zos = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(outFile)));
+        ZipEntry ze = new ZipEntry(inFile.getName());
+        zos.putNextEntry(ze);
+
+        byte[] buf = new byte[2048];
+        int readLen = 0;
+        InputStream is = new BufferedInputStream(new FileInputStream(inFile));
+        while ((readLen = is.read(buf, 0, 2048)) != -1) {
+            zos.write(buf, 0, readLen);
+        }
+        is.close();
+
+        zos.close();
     }
     
     public static void main(String[] args) throws Exception{
