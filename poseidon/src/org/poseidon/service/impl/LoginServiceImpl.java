@@ -34,24 +34,29 @@ public class LoginServiceImpl implements LoginService {
 	@Resource(name = "onLineUserSessionBindingListener")
 	private HttpSessionBindingListener onLineUserSessionBindingListener;
 
-	public String returnLoginMessage(String loginEmail, String password) throws Exception {
+	public String returnLoginMessage(String loginEmail, String password){
 		String loginMessage = "success";
-		DetachedCriteria dc =  DetachedCriteria.forClass(Login.class);
-		dc.add(Restrictions.sqlRestriction("upper({alias}.login_email) = ?", loginEmail.toUpperCase(), Hibernate.STRING));
-		dc.add(Restrictions.eq("loginPassword", password));
-		List<Login> loginList = this.loginDao.findByCriteria(dc);
-		
-		if (loginList.size() == 0) {
-			loginMessage = "wrongLogin";
-		} else if ("0".equals(loginList.get(0).getIsAvail())) {
-			loginMessage = "invalidLogin";
-		} else if (OnLineUserSessionBindingListener.isLogin(loginEmail)) {
-			loginMessage = "hasLogined";
-		}
+		try{
+		    DetachedCriteria dc =  DetachedCriteria.forClass(Login.class);
+	        dc.add(Restrictions.sqlRestriction("upper({alias}.login_email) = ?", loginEmail.toUpperCase(), Hibernate.STRING));
+	        dc.add(Restrictions.eq("loginPassword", password));
+	        List<Login> loginList = this.loginDao.findByCriteria(dc);
+	        
+	        if (loginList.size() == 0) {
+	            loginMessage = "wrongLogin";
+	        } else if ("0".equals(loginList.get(0).getIsAvail())) {
+	            loginMessage = "invalidLogin";
+	        } else if (OnLineUserSessionBindingListener.isLogin(loginEmail)) {
+	            loginMessage = "hasLogined";
+	        }
+		}catch (Throwable t) {
+            t.printStackTrace();
+            loginMessage = null;
+        }
 		return loginMessage;
 	}
 
-	public void setSession(String loginEmail,HttpServletRequest request,HttpServletResponse response) throws Exception {
+	public void setSession(String loginEmail,HttpServletRequest request,HttpServletResponse response){
 		Login login = this.getLogin(loginEmail);
 		if(login==null){
 			return;
@@ -74,7 +79,7 @@ public class LoginServiceImpl implements LoginService {
 		session.setAttribute(poseidonSession.getLogin().getLoginEmail(), onLineUserSessionBindingListener);
 	}
 	
-	public void addLogin(Login login) throws Exception{
+	public void addLogin(Login login){
 		this.loginDao.save(login);
 	}
 	

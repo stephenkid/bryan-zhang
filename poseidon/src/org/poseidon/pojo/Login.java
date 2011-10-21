@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 /**
  * TLogin entity. @author MyEclipse Persistence Tools
@@ -146,7 +144,6 @@ public class Login implements Serializable {
 		this.isAvail = isAvail;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "input_date", length = 10)
 	public Date getInputDate() {
 		return this.inputDate;
@@ -156,7 +153,6 @@ public class Login implements Serializable {
 		this.inputDate = inputDate;
 	}
 
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "edit_date", length = 10)
 	public Date getEditDate() {
 		return this.editDate;
