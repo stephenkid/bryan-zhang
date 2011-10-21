@@ -303,6 +303,14 @@ public class DateUtil {
 		return "0";
 	}
 	
+    public final static String getBetweenStr(java.util.Date beginDate, java.util.Date endDate) {
+        long time = endDate.getTime() - beginDate.getTime();
+        long hour = (time / (60 * 60 * 1000));
+        long minute =((time / (60 * 1000)) - hour * 60);
+        long second = (time / 1000  - hour * 60*  60 - minute * 60);
+        return hour + "\u5c0f\u65f6" + minute + "\u5206" + second + "\u79d2";
+    }
+	
 	public static void main(String[] args){
 		System.out.println(strToDate("2011-1-25 16:36:23"));
 	}
