@@ -1,8 +1,8 @@
 package org.poseidon.component.dataExport;
 
 /**
- * @author Bryan Zhang
  * xls导出组件
+ * @author Bryan Zhang
  */
 
 import java.io.File;
