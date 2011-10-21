@@ -74,5 +74,4 @@
 										  org.poseidon.service,
 										  org.poseidon.listener,
 										  org.poseidon.component"/>
-	
 </beans>

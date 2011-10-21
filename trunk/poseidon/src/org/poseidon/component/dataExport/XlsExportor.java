@@ -115,9 +115,9 @@ public class XlsExportor{
 	        if (bottomDeal != null){
 	            rowCnt = bottomDeal.dealBottom(sheet, rowCnt);
 	        }
-		}catch(Exception  e){
-		    e.printStackTrace();
-		    return null;
+		}catch(Throwable t){
+		    t.printStackTrace();
+		    wb = null;
 		}
 		return wb;
 	}
@@ -135,8 +135,8 @@ public class XlsExportor{
 			HSSFWorkbook wb = (HSSFWorkbook)this.convertList(dataList, headMap, colWidthMap, headDeal, bottomDeal);
 			os = new FileOutputStream(new File(path));
 			wb.write(os);
-		}catch(Exception e){
-			e.printStackTrace();
+		}catch(Throwable t){
+			t.printStackTrace();
 			flag = false;
 		}finally{
 			try {
@@ -162,7 +162,7 @@ public class XlsExportor{
 	            args = argList.toArray();
 	        }
 	        this.jdbcTemplate.query(sql.toString(), args, new CsvRowCallbackHandler(pw));
-		}catch(Exception e){
+		}catch(Throwable e){
 		    e.printStackTrace();
 		}finally{
 		    try {
