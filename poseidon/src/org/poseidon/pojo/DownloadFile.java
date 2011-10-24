@@ -23,8 +23,8 @@ public class DownloadFile implements java.io.Serializable {
     public static final String FILE_STATUS_FAIL = "F";
     
     private Long id;
+    private Long fileId;
     private String fileStatus;
-    private String filePath;
     private Date startTime;
     private Date finishTime;
     private String interval;
@@ -36,9 +36,8 @@ public class DownloadFile implements java.io.Serializable {
     }
 
     /** full constructor */
-    public DownloadFile(String fileStatus, String filePath, Date startTime, Date finishTime) {
+    public DownloadFile(String fileStatus, Date startTime, Date finishTime) {
         this.fileStatus = fileStatus;
-        this.filePath = filePath;
         this.startTime = startTime;
         this.finishTime = finishTime;
     }
@@ -54,6 +53,15 @@ public class DownloadFile implements java.io.Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    @Column(name = "file_id")
+    public Long getFileId() {
+        return fileId;
+    }
+
+    public void setFileId(Long fileId) {
+        this.fileId = fileId;
+    }
 
     @Column(name = "file_status", length = 1)
     public String getFileStatus() {
@@ -62,15 +70,6 @@ public class DownloadFile implements java.io.Serializable {
 
     public void setFileStatus(String fileStatus) {
         this.fileStatus = fileStatus;
-    }
-
-    @Column(name = "file_path", length = 50)
-    public String getFilePath() {
-        return this.filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
     }
 
     @Column(name = "start_time", length = 19)

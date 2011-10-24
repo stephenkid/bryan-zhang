@@ -75,9 +75,4 @@
 										  org.poseidon.listener,
 										  org.poseidon.component"/>
 										  
-	<!-- 文件池 -->
-	<bean id="filePool" class="org.poseidon.util.PoseidonFilePoool">
-		<constructor-arg index="0" type="java.lang.String" value="/poseidonFilePool"/>
-	</bean>
-	
 </beans>

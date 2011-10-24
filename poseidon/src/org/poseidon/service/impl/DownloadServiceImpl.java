@@ -8,13 +8,15 @@ import java.util.Random;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.nutz.filepool.FilePool;
+import org.nutz.filepool.NutFilePool;
 import org.poseidon.component.dataExport.XlsExportor;
 import org.poseidon.dao.DownloadFileDao;
 import org.poseidon.dao.PersonDao;
 import org.poseidon.pojo.DownloadFile;
 import org.poseidon.pojo.Person;
 import org.poseidon.service.DownloadService;
-import org.poseidon.util.PoseidonFilePoool;
+import org.poseidon.util.PropConstants;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +30,6 @@ public class DownloadServiceImpl implements DownloadService {
 	
 	@Resource(name = "downloadFileDao")
     private DownloadFileDao downloadFileDao;
-	
-	@Resource(name = "filePool")
-	private PoseidonFilePoool filePool;
 	
 	@Resource(name = "XlsExportor")
     private XlsExportor XlsExportor;
@@ -62,16 +61,18 @@ public class DownloadServiceImpl implements DownloadService {
 	    new Thread(){
             @Override
             public void run() {
+                FilePool filePool = new NutFilePool(PropConstants.getProperties("filePoolPath"));
+                
                 DownloadFile df = new DownloadFile();
                 df.setFileStatus(DownloadFile.FILE_STATUS_PENDING);
                 df.setStartTime(new Date());
+                File f = filePool.createFile(".csv");
+                Long fileId = filePool.getFileId(f);
+                df.setFileId(fileId);
                 downloadFileDao.save(df);
-                File f = filePool.createFile("csv");
-                
                 
                 String sql = "select * from t_person t";
-                String path = "d:/bigData.csv";
-                XlsExportor.generateFileFromSql(sql, null, path);
+                XlsExportor.generateFileFromSql(sql, null, f);
                 
                 df.setFinishTime(new Date());
                 df.setFileStatus(DownloadFile.FILE_STATUS_SUCCESS);
