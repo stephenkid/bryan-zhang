@@ -25,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.poseidon.component.dataExport.XlsBottomDeal;
 import org.poseidon.component.dataExport.XlsExportor;
 import org.poseidon.component.dataExport.XlsHeadDeal;
+import org.poseidon.dto.PersonDto;
 
 @Controller
 @RequestMapping("/downloadAction.do")
@@ -106,4 +107,12 @@ public class DownloadController extends BaseController {
 		this.downloadService.createTestData();
 		return null;
 	}
+	
+	@RequestMapping(params = "action=listDownloadFile")
+    public ModelAndView listDownloadFile(HttpServletRequest request,HttpServletResponse response, PersonDto dto) throws Exception {
+	    int startIndex = Integer.parseInt(request.getParameter("page"));
+	    int pageSize = Integer.parseInt(request.getParameter("rows"));
+        this.downloadService.findPerson(dto, startIndex, pageSize);
+        return null;
+    }
 }

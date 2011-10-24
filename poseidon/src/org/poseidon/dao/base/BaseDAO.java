@@ -134,9 +134,9 @@ public abstract class BaseDAO{
 		}
 	}
 	
-	public <T> List<T> findByCriteria(DetachedCriteria dc, int firstResult, int maxResults){
+	public <T> List<T> findByCriteria(DetachedCriteria dc, int page, int rows){
 		try {
-			return this.hibernateTemplate.findByCriteria(dc, firstResult, maxResults);
+			return this.hibernateTemplate.findByCriteria(dc, (page-1)*rows, rows);
 		} catch (RuntimeException re) {
 			throw re;
 		}
