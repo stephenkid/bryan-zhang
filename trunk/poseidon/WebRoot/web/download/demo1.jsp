@@ -21,10 +21,17 @@
 		</script>
 	</head>
 	<body style="margin:6px;">
-		<input type="button" value="下载http文件" onclick="deal1();">
-		<br/>
-		<input type="button" value="普通下载" onclick="deal2();">
-		<br/>
-		<input type="button" value="大容量下载" onclick="deal3();">
+		<div id="dlDiv" class="easyui-accordion" style="width:800px;height:300px;">
+			<div title="下载http文件">
+				<input type="button" value="执行" onclick="deal1();">
+			</div>
+			<div title="普通下载">
+				<input type="button" value="执行" onclick="deal2();">
+			</div>
+			<div title="下载大容量文件">
+				<input type="button" value="执行" onclick="deal3();">
+				<table id="bigDataTb"></table>
+			</div>
+		</div>
 	</body>
 </html>

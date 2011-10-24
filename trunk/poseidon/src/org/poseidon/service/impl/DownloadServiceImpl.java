@@ -8,11 +8,14 @@ import java.util.Random;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.nutz.filepool.FilePool;
 import org.nutz.filepool.NutFilePool;
 import org.poseidon.component.dataExport.XlsExportor;
 import org.poseidon.dao.DownloadFileDao;
 import org.poseidon.dao.PersonDao;
+import org.poseidon.dto.PersonDto;
 import org.poseidon.pojo.DownloadFile;
 import org.poseidon.pojo.Person;
 import org.poseidon.service.DownloadService;
@@ -53,7 +56,7 @@ public class DownloadServiceImpl implements DownloadService {
 	}
 	
 	public List<Person> findPerson(Person cond){
-		List<Person> pList = personDao.findByExample(cond);
+		List<Person> pList = this.personDao.findByExample(cond);
 		return pList;
 	}
 	
@@ -61,23 +64,37 @@ public class DownloadServiceImpl implements DownloadService {
 	    new Thread(){
             @Override
             public void run() {
-                FilePool filePool = new NutFilePool(PropConstants.getProperties("filePoolPath"));
-                
                 DownloadFile df = new DownloadFile();
-                df.setFileStatus(DownloadFile.FILE_STATUS_PENDING);
-                df.setStartTime(new Date());
-                File f = filePool.createFile(".csv");
-                Long fileId = filePool.getFileId(f);
-                df.setFileId(fileId);
-                downloadFileDao.save(df);
-                
-                String sql = "select * from t_person t";
-                XlsExportor.generateFileFromSql(sql, null, f);
-                
-                df.setFinishTime(new Date());
-                df.setFileStatus(DownloadFile.FILE_STATUS_SUCCESS);
-                downloadFileDao.merge(df);
+                try{
+                    FilePool filePool = new NutFilePool(PropConstants.getProperties("filePoolPath"));
+                    
+                    df.setFileStatus(DownloadFile.FILE_STATUS_PENDING);
+                    df.setStartTime(new Date());
+                    File f = filePool.createFile(".csv");
+                    Long fileId = filePool.getFileId(f);
+                    df.setFileId(fileId);
+                    downloadFileDao.save(df);
+                    
+                    String sql = "select * from t_person t";
+                    XlsExportor.generateFileFromSql(sql, null, f);
+                    
+                    df.setFinishTime(new Date());
+                    df.setFileStatus(DownloadFile.FILE_STATUS_SUCCESS);
+                    downloadFileDao.merge(df);
+                }catch(Throwable t){
+                    t.printStackTrace();
+                    df.setFileStatus(DownloadFile.FILE_STATUS_FAIL);
+                    downloadFileDao.merge(df);
+                }
             }
 	    }.start();
+	}
+	
+	public List<Person> findPerson(PersonDto dto, int page, int rows){
+	    List<Person> personList = null;
+	    DetachedCriteria dc = DetachedCriteria.forClass(Person.class);
+	    dc.addOrder(Order.desc("id"));
+	    personList = this.personDao.findByCriteria(dc, page, rows);
+	    return personList;
 	}
 }
