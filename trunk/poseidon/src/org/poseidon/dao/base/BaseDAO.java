@@ -1,14 +1,20 @@
 package org.poseidon.dao.base;
 // default package
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
+import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 @SuppressWarnings({"unchecked","unused"})
@@ -132,6 +138,21 @@ public abstract class BaseDAO{
 		} catch (RuntimeException re) {
 			throw re;
 		}
+	}
+	
+	public int getCountByCriteria(DetachedCriteria dc){
+	    try{
+	        final DetachedCriteria detachedCriteria = dc;
+	        Long count = (Long)this.hibernateTemplate.execute(new HibernateCallback() {
+	            public Object doInHibernate(Session session) throws HibernateException, SQLException{
+	                Criteria criteria = detachedCriteria.getExecutableCriteria(session);
+	                return criteria.setProjection(Projections.rowCount()).uniqueResult();
+	            }
+            });
+	        return count.intValue();
+	    } catch (RuntimeException re){
+	        throw re;
+	    }
 	}
 	
 	public <T> List<T> findByCriteria(DetachedCriteria dc, int page, int rows){
