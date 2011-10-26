@@ -2,7 +2,9 @@ package org.poseidon.service.impl;
 
 import java.io.File;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.annotation.Resource;
@@ -91,11 +93,19 @@ public class DownloadServiceImpl implements DownloadService {
 	    }.start();
 	}
 	
-	public List<DownloadFile> findDownloadFileList(DownloadFileDto dto, int page, int rows){
-	    List<DownloadFile> dfList = null;
+	public Map<String, Object> findDownloadFileList(DownloadFileDto dto, int page, int rows){
+	    Map<String, Object> returnMap = new HashMap<String, Object>();
 	    DetachedCriteria dc = DetachedCriteria.forClass(DownloadFile.class);
 	    dc.addOrder(Order.desc("id"));
-	    dfList = this.downloadFileDao.findByCriteria(dc, page, rows);
-	    return dfList;
+	    
+	    List<DownloadFile> dfList = this.downloadFileDao.findByCriteria(dc, page, rows);
+	    returnMap.put("rows", dfList);
+	    
+	    DetachedCriteria dc2 = DetachedCriteria.forClass(DownloadFile.class);
+        dc.addOrder(Order.desc("id"));
+	    int count = this.downloadFileDao.getCountByCriteria(dc2);
+        returnMap.put("total", count);
+	    
+	    return returnMap;
 	}
 }

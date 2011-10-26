@@ -48,7 +48,8 @@
 							<th field="fileStatus" width="80">文件状态</th>
 							<th field="startTime" width="150">开始时间</th>
 							<th field="finishTime" width="150">结束时间</th>
-							<th field="interval" width="200">耗时</th>
+							<th field="interval" width="150">耗时</th>
+							<th field="action" width="100" ></th>
 						</tr>
 					</thead>
 				</table>
