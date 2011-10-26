@@ -16,15 +16,19 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.nutz.json.Json;
 import org.poseidon.controller.base.BaseController;
+import org.poseidon.pojo.DownloadFile;
 import org.poseidon.pojo.Person;
 import org.poseidon.service.DownloadService;
+import org.poseidon.util.ServletUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.poseidon.component.dataExport.XlsBottomDeal;
 import org.poseidon.component.dataExport.XlsExportor;
 import org.poseidon.component.dataExport.XlsHeadDeal;
+import org.poseidon.dto.DownloadFileDto;
 import org.poseidon.dto.PersonDto;
 
 @Controller
@@ -97,7 +101,15 @@ public class DownloadController extends BaseController {
 	
 	@RequestMapping(params = "action=testDownload3")
     public ModelAndView testDownload3(HttpServletRequest request,HttpServletResponse response) throws Exception {
-	    this.downloadService.generateBigDataFile();
+	    String message = null;
+	    try{
+	        this.downloadService.generateBigDataFile();
+	        message = "提交成功";
+	    }catch(Throwable t){
+	        t.printStackTrace();
+	        message = "提交失败";
+	    }
+	    ServletUtil.writerText(response, message);
         return null;
 	}
 	
@@ -109,10 +121,11 @@ public class DownloadController extends BaseController {
 	}
 	
 	@RequestMapping(params = "action=listDownloadFile")
-    public ModelAndView listDownloadFile(HttpServletRequest request,HttpServletResponse response, PersonDto dto) throws Exception {
-	    int startIndex = Integer.parseInt(request.getParameter("page"));
-	    int pageSize = Integer.parseInt(request.getParameter("rows"));
-        this.downloadService.findPerson(dto, startIndex, pageSize);
+    public ModelAndView listDownloadFile(HttpServletRequest request,HttpServletResponse response, DownloadFileDto dto) throws Exception {
+	    int page = Integer.parseInt(request.getParameter("page"));
+	    int rows = Integer.parseInt(request.getParameter("rows"));
+        List<DownloadFile> dfList = this.downloadService.findDownloadFileList(dto, page, rows);
+        ServletUtil.writerJson(response, Json.toJson(dfList));
         return null;
     }
 }

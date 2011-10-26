@@ -15,7 +15,7 @@ import org.nutz.filepool.NutFilePool;
 import org.poseidon.component.dataExport.XlsExportor;
 import org.poseidon.dao.DownloadFileDao;
 import org.poseidon.dao.PersonDao;
-import org.poseidon.dto.PersonDto;
+import org.poseidon.dto.DownloadFileDto;
 import org.poseidon.pojo.DownloadFile;
 import org.poseidon.pojo.Person;
 import org.poseidon.service.DownloadService;
@@ -64,10 +64,11 @@ public class DownloadServiceImpl implements DownloadService {
 	    new Thread(){
             @Override
             public void run() {
-                DownloadFile df = new DownloadFile();
+                DownloadFile df = null;
                 try{
                     FilePool filePool = new NutFilePool(PropConstants.getProperties("filePoolPath"));
                     
+                    df = new DownloadFile();
                     df.setFileStatus(DownloadFile.FILE_STATUS_PENDING);
                     df.setStartTime(new Date());
                     File f = filePool.createFile(".csv");
@@ -90,11 +91,11 @@ public class DownloadServiceImpl implements DownloadService {
 	    }.start();
 	}
 	
-	public List<Person> findPerson(PersonDto dto, int page, int rows){
-	    List<Person> personList = null;
-	    DetachedCriteria dc = DetachedCriteria.forClass(Person.class);
+	public List<DownloadFile> findDownloadFileList(DownloadFileDto dto, int page, int rows){
+	    List<DownloadFile> dfList = null;
+	    DetachedCriteria dc = DetachedCriteria.forClass(DownloadFile.class);
 	    dc.addOrder(Order.desc("id"));
-	    personList = this.personDao.findByCriteria(dc, page, rows);
-	    return personList;
+	    dfList = this.downloadFileDao.findByCriteria(dc, page, rows);
+	    return dfList;
 	}
 }
