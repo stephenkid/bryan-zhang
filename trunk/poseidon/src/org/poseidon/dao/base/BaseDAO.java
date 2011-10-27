@@ -153,7 +153,6 @@ public abstract class BaseDAO{
                     criteria.setProjection(null);
                     List<?> list = criteria.setFirstResult((page-1)*rows).setMaxResults(rows).list();
                     returnMap.put("rows", list);
-                    System.out.println(returnMap);
                     return returnMap;
                 }
             });

@@ -1,5 +1,8 @@
 package org.poseidon.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
@@ -16,11 +19,14 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.nutz.filepool.FilePool;
+import org.nutz.filepool.NutFilePool;
 import org.nutz.json.Json;
 import org.poseidon.controller.base.BaseController;
 import org.poseidon.pojo.DownloadFile;
 import org.poseidon.pojo.Person;
 import org.poseidon.service.DownloadService;
+import org.poseidon.util.PropConstants;
 import org.poseidon.util.ServletUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -126,6 +132,31 @@ public class DownloadController extends BaseController {
 	    int rows = Integer.parseInt(request.getParameter("rows"));
         Map<String, ?> dataMap = this.downloadService.findDownloadFileList(dto, page, rows);
         ServletUtil.writerJson(response, Json.toJson(dataMap));
+        return null;
+    }
+	
+	@RequestMapping(params = "action=downloadFile")
+    public ModelAndView downloadFile(HttpServletRequest request,HttpServletResponse response, Long fileId) throws Exception {
+        System.out.println(fileId);
+        if (fileId != null){
+            FilePool filePool = new NutFilePool(PropConstants.getProperties("filePoolPath"));
+            File file = filePool.getFile(fileId, ".csv");
+            if (file != null){
+                InputStream is = new FileInputStream(file);
+
+                response.setHeader("Content-Disposition","attachment;filename=demo.csv");
+                OutputStream out = response.getOutputStream();
+
+                int n = 0;
+                byte b[] = new byte[2*1024];
+                while ((n = is.read(b)) != -1) {
+                    out.write(b, 0, n);
+                }
+                out.flush();
+                out.close();
+                is.close();
+            }
+        }
         return null;
     }
 }

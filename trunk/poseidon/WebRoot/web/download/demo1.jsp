@@ -26,6 +26,11 @@
 		        }).responseText;
 				alert(returnStr);
 			}
+
+			function doDownload(fileId){
+				self.location.href="${pageContext.request.contextPath}/downloadAction.do?action=downloadFile&fileId="+fileId;
+			}
+			
 		</script>
 	</head>
 	<body style="margin:6px;">
@@ -49,7 +54,14 @@
 							<th field="startTime" width="150">开始时间</th>
 							<th field="finishTime" width="150">结束时间</th>
 							<th field="interval" width="150">耗时</th>
-							<th field="action" width="100" ></th>
+							<th field="action" width="100" formatter="actionFmt"></th>
+							<script type="text/javascript">
+								function actionFmt(val, row){
+									if (row.fileStatus == "S"){
+										return "<a href='#nulllink' onclick='doDownload("+row.fileId+");'>下载文件</a>";
+									}
+								}
+							</script>
 						</tr>
 					</thead>
 				</table>
