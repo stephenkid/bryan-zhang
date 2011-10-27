@@ -13,5 +13,5 @@ public interface DownloadService {
 	
 	public void generateBigDataFile();
 	
-	public Map<String, Object> findDownloadFileList(DownloadFileDto dto, int page, int rows);
+	public Map<String, ?> findDownloadFileList(DownloadFileDto dto, int page, int rows);
 }
