@@ -93,19 +93,10 @@ public class DownloadServiceImpl implements DownloadService {
 	    }.start();
 	}
 	
-	public Map<String, Object> findDownloadFileList(DownloadFileDto dto, int page, int rows){
-	    Map<String, Object> returnMap = new HashMap<String, Object>();
+	public Map<String, ?> findDownloadFileList(DownloadFileDto dto, int page, int rows){
 	    DetachedCriteria dc = DetachedCriteria.forClass(DownloadFile.class);
 	    dc.addOrder(Order.desc("id"));
-	    
-	    List<DownloadFile> dfList = this.downloadFileDao.findByCriteria(dc, page, rows);
-	    returnMap.put("rows", dfList);
-	    
-	    DetachedCriteria dc2 = DetachedCriteria.forClass(DownloadFile.class);
-        dc.addOrder(Order.desc("id"));
-	    int count = this.downloadFileDao.getCountByCriteria(dc2);
-        returnMap.put("total", count);
-	    
+	    Map<String, ?> returnMap = this.downloadFileDao.findByCriteria(dc, page, rows);
 	    return returnMap;
 	}
 }

@@ -124,7 +124,7 @@ public class DownloadController extends BaseController {
     public ModelAndView listDownloadFile(HttpServletRequest request,HttpServletResponse response, DownloadFileDto dto) throws Exception {
 	    int page = Integer.parseInt(request.getParameter("page"));
 	    int rows = Integer.parseInt(request.getParameter("rows"));
-        Map<String, Object> dataMap = this.downloadService.findDownloadFileList(dto, page, rows);
+        Map<String, ?> dataMap = this.downloadService.findDownloadFileList(dto, page, rows);
         ServletUtil.writerJson(response, Json.toJson(dataMap));
         return null;
     }

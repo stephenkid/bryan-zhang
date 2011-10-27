@@ -2,7 +2,9 @@ package org.poseidon.dao.base;
 // default package
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -140,26 +142,24 @@ public abstract class BaseDAO{
 		}
 	}
 	
-	public int getCountByCriteria(DetachedCriteria dc){
+	public Map<String, ?> findByCriteria(final DetachedCriteria dc, final int page, final int rows){
 	    try{
-	        final DetachedCriteria detachedCriteria = dc;
-	        Long count = (Long)this.hibernateTemplate.execute(new HibernateCallback() {
-	            public Object doInHibernate(Session session) throws HibernateException, SQLException{
-	                Criteria criteria = detachedCriteria.getExecutableCriteria(session);
-	                return criteria.setProjection(Projections.rowCount()).uniqueResult();
-	            }
+	        Map<String, ?> returnMap = this.hibernateTemplate.execute(new HibernateCallback<Map<String, ?>>() {
+                public Map<String, ?> doInHibernate(Session session) throws HibernateException, SQLException {
+                    Map<String, Object> returnMap = new HashMap<String, Object>();
+                    Criteria criteria = dc.getExecutableCriteria(session);
+                    int total = ((Long)criteria.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+                    returnMap.put("total", total);
+                    criteria.setProjection(null);
+                    List<?> list = criteria.setFirstResult((page-1)*rows).setMaxResults(rows).list();
+                    returnMap.put("rows", list);
+                    System.out.println(returnMap);
+                    return returnMap;
+                }
             });
-	        return count.intValue();
+	        return returnMap;
 	    } catch (RuntimeException re){
 	        throw re;
 	    }
-	}
-	
-	public <T> List<T> findByCriteria(DetachedCriteria dc, int page, int rows){
-		try {
-			return this.hibernateTemplate.findByCriteria(dc, (page-1)*rows, rows);
-		} catch (RuntimeException re) {
-			throw re;
-		}
 	}
 }
