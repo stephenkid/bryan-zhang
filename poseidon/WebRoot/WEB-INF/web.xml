@@ -104,4 +104,11 @@
 	<login-config>
 		<auth-method>BASIC</auth-method>
 	</login-config>
+	
+	<jsp-config>
+		<taglib>
+			<taglib-uri>/cs.tld</taglib-uri>
+			<taglib-location>/WEB-INF/tld/pd.tld</taglib-location>
+		</taglib>
+	</jsp-config>
 </web-app>
