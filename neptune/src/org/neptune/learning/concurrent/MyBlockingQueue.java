@@ -5,6 +5,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * @author bryan
+ *  无界线程池，可以进行自动线程回收
+ */
 public class MyBlockingQueue extends Thread {
 	public static BlockingQueue<String> queue = new LinkedBlockingQueue<String>(3);
 	private int index;
