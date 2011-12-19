@@ -6,6 +6,11 @@ import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * @author bryan
+ * 将生产新的异步任务与使用已完成任务的结果分离开来的服务。
+ *
+ */
 public class MyCompletionService implements Callable<String> {
 	private int id;
 
@@ -29,7 +34,7 @@ public class MyCompletionService implements Callable<String> {
 		Integer time = (int) (Math.random() * 1000);
 		try {
 			System.out.println(this.id + " start");
-			Thread.sleep(time);
+			//Thread.sleep(time);
 			System.out.println(this.id + " end");
 		} catch (Exception e) {
 			e.printStackTrace();
