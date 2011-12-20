@@ -46,88 +46,105 @@ public class XlsExportor{
 	private static final String CSV_JOIN_STR = ",";
 	
 	/**
-	 * 把list转换成HSSFWorkbook对象,内部支持pojo和map
-	 * @param dataList 数据集合
-	 * @param headMap 列头集合
-	 * @param colWidthMap 列宽集合
-	 * @param headDeal 头部处理器
-	 * @param bottomDeal 底部处理器
-	 * @return HSSFWorkbook
-	 */
-	public <T> HSSFWorkbook convertList(List<T> dataList, LinkedHashMap<String, String> headMap, Map<Integer, Integer> colWidthMap, 
-	                                    XlsHeadDeal headDeal, XlsBottomDeal bottomDeal){
-		HSSFWorkbook wb = new HSSFWorkbook();
-		HSSFRow curRow = null;
-		HSSFCell cell = null;
-		Integer rowCnt = 0;
-		Integer colCnt = 0;
-		HSSFSheet sheet = wb.createSheet();
-		
-		//设置列宽度
-		if (colWidthMap != null){
-		    for (Entry<Integer, Integer> entry : colWidthMap.entrySet()){
-		        sheet.setColumnWidth(entry.getKey(), entry.getValue());
-		    }
-		}
-		
-		try{
-		    //头部处理
-		    if (headDeal != null){
-		        rowCnt = headDeal.dealHead(sheet, rowCnt);
-		    }
-		    
-		    //写入列头
-	        HSSFCellStyle style = wb.createCellStyle();
-	        HSSFFont font = wb.createFont();
-	        curRow = sheet.createRow(rowCnt++);
-	        Iterator<String> it = headMap.values().iterator();
-	        while(it.hasNext()){
-	            cell = curRow.createCell(colCnt);
-	            cell.setCellValue(new HSSFRichTextString(it.next()));
-	            font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-	            style.setFont(font);
-	            cell.setCellStyle(style);
-	            colCnt++;
-	        }
-	        
-	        //写入主数据
-	        Object valueObj = null;
-	        Map<String, ?> mapItem = null;
-	        for(T dataObj : dataList){
-	            curRow = sheet.createRow(rowCnt++);
-	            colCnt = 0;
-	            
-	            //针对spring的jdbctemplate和 hibernatetemplate所返回的item类型进行处理
-	            if (dataObj instanceof Map){
-	                mapItem = (Map<String, ?>)dataObj;
-	                for (it = headMap.keySet().iterator(); it.hasNext();) {
-	                    valueObj = mapItem.get(it.next());
-	                    PoiUtil.setCellValue(curRow, colCnt, valueObj);
-	                    colCnt++;
-	                }
-	            }else{
-	                for (Entry<String, String> headEntry : headMap.entrySet()){
-	                    Method m = dataObj.getClass().getMethod("get" + StringUtil.upperFirstChar(headEntry.getKey()));
-	                    if (m != null){
-	                        valueObj = m.invoke(dataObj);
-                            PoiUtil.setCellValue(curRow, colCnt, valueObj);
+     * 把list转换成HSSFWorkbook对象,内部支持pojo和map
+     * @param dataList 数据集合  必要参数，不可以为null
+     * @param headMap 列头集合  必要参数，不可以为null
+     * @param colWidthMap 列宽集合
+     * @param allDictMap 字典处理器
+     * @param headDeal 头部处理器
+     * @param bottomDeal 底部处理器
+     * @return HSSFWorkbook
+     */
+    public <T> HSSFWorkbook convertList(List<T> dataList, LinkedHashMap<String, String> headMap, Map<Integer, Integer> colWidthMap, 
+                                        Map<String, Map<String, ?>> allDictMap, XlsHeadDeal headDeal, XlsBottomDeal bottomDeal){
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFRow curRow = null;
+        HSSFCell cell = null;
+        Integer rowCnt = 0;
+        Integer colCnt = 0;
+        HSSFSheet sheet = wb.createSheet();
+        
+        //设置列宽度
+        if (colWidthMap != null){
+            for (Entry<Integer, Integer> entry : colWidthMap.entrySet()){
+                sheet.setColumnWidth(entry.getKey(), entry.getValue());
+            }
+        }
+        
+        try{
+            //头部处理
+            if (headDeal != null){
+                rowCnt = headDeal.dealHead(sheet, rowCnt);
+            }
+            
+            //写入列头
+            HSSFCellStyle style = wb.createCellStyle();
+            HSSFFont font = wb.createFont();
+            curRow = sheet.createRow(rowCnt++);
+            Iterator<String> it = headMap.values().iterator();
+            while(it.hasNext()){
+                cell = curRow.createCell(colCnt);
+                cell.setCellValue(new HSSFRichTextString(it.next()));
+                font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+                style.setFont(font);
+                cell.setCellStyle(style);
+                colCnt++;
+            }
+            
+            //写入主数据
+            String key = null;
+            Object valueObj = null;
+            Map<String, ?> mapItem = null;
+            for(T dataObj : dataList){
+                curRow = sheet.createRow(rowCnt++);
+                colCnt = 0;
+                
+                //针对spring的jdbctemplate和 hibernatetemplate所返回的item类型进行处理
+                if (dataObj instanceof Map){
+                    mapItem = (Map<String, ?>)dataObj;
+                    for (it = headMap.keySet().iterator(); it.hasNext();) {
+                        key = it.next();
+                        valueObj = mapItem.get(key);
+                        PoiUtil.setCellValue(curRow, colCnt, this.getValueFromDict(allDictMap, key, valueObj));
+                        colCnt++;
+                    }
+                }else{
+                    for (Entry<String, String> headEntry : headMap.entrySet()){
+                        key = headEntry.getKey();
+                        Method m = dataObj.getClass().getMethod("get" + StringUtil.upperFirstChar(key));
+                        if (m != null){
+                            valueObj = m.invoke(dataObj);
+                            PoiUtil.setCellValue(curRow, colCnt, this.getValueFromDict(allDictMap, key, valueObj));
                             colCnt++;
-	                    }
-	                }
-	            }
-	        }
-	        
-	        //底部处理
-	        if (bottomDeal != null){
-	            rowCnt = bottomDeal.dealBottom(sheet, rowCnt);
-	        }
-		}catch(Throwable t){
-		    t.printStackTrace();
-		    wb = null;
-		}
-		return wb;
-	}
+                        }
+                    }
+                }
+            }
+            
+            //底部处理
+            if (bottomDeal != null){
+                rowCnt = bottomDeal.dealBottom(sheet, rowCnt);
+            }
+        }catch(Throwable t){
+            t.printStackTrace();
+            wb = null;
+        }
+        return wb;
+    }
 	
+    /**
+     * 把list转换成HSSFWorkbook对象,内部支持pojo和map
+     * @param dataList 数据集合  必要参数，不可以为null
+     * @param headMap 列头集合  必要参数，不可以为null
+     * @param colWidthMap 列宽集合
+     * @param headDeal 头部处理器
+     * @param bottomDeal 底部处理器
+     * @return HSSFWorkbook
+     */
+    public <T> HSSFWorkbook convertList(List<T> dataList, LinkedHashMap<String, String> headMap, Map<Integer, Integer> colWidthMap, 
+                                        XlsHeadDeal headDeal, XlsBottomDeal bottomDeal){
+        return this.convertList(dataList, headMap, colWidthMap, null, headDeal, bottomDeal);
+    }
 	
 	/**
 	 * 把list写入文件,内部支持pojo和map
@@ -201,6 +218,14 @@ public class XlsExportor{
 	
 	/***************************************************private class*****************************************************/
 	
+    private Object getValueFromDict(Map<String, Map<String, ?>> allDictMap, String col, Object colValue){
+        if (allDictMap != null && allDictMap.containsKey(col) && colValue != null){
+            Map<String, ?> dictMap = allDictMap.get(col);
+            return dictMap.get(colValue.toString());
+        }
+        return colValue;
+    }
+    
 	/**
 	 * csv Fetch处理器
 	 */
