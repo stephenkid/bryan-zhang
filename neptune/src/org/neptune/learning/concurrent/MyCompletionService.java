@@ -34,7 +34,7 @@ public class MyCompletionService implements Callable<String> {
 		Integer time = (int) (Math.random() * 1000);
 		try {
 			System.out.println(this.id + " start");
-			//Thread.sleep(time);
+			Thread.sleep(time);
 			System.out.println(this.id + " end");
 		} catch (Exception e) {
 			e.printStackTrace();
