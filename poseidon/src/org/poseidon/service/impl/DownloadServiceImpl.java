@@ -1,11 +1,15 @@
 package org.poseidon.service.impl;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.annotation.Resource;
 
@@ -39,6 +43,10 @@ public class DownloadServiceImpl implements DownloadService {
 	@Resource(name = "XlsExportor")
     private XlsExportor XlsExportor;
 	
+	private ExecutorService threadPool;
+	
+	private List<Future> futureList = new ArrayList<Future>();
+	
 	public void createTestData(){
 		Random random = new Random();
 		Person person = null;
@@ -63,7 +71,10 @@ public class DownloadServiceImpl implements DownloadService {
 	}
 	
 	public void generateBigDataFile(){
-	    new Thread(){
+	    if (this.threadPool == null){
+	        this.threadPool = Executors.newFixedThreadPool(4);
+	    }
+        this.threadPool.submit(new Thread(){
             @Override
             public void run() {
                 DownloadFile df = null;
@@ -90,7 +101,7 @@ public class DownloadServiceImpl implements DownloadService {
                     downloadFileDao.merge(df);
                 }
             }
-	    }.start();
+        });
 	}
 	
 	public Map<String, ?> findDownloadFileList(DownloadFileDto dto, int page, int rows){
