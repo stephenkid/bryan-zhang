@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -74,7 +75,8 @@ public class DownloadServiceImpl implements DownloadService {
 	    if (this.threadPool == null){
 	        this.threadPool = Executors.newFixedThreadPool(4);
 	    }
-        this.threadPool.submit(new Thread(){
+	    
+        this.threadPool.submit(new Thread(){//也可用Callable接口，这样就可以用future获得返回值
             @Override
             public void run() {
                 DownloadFile df = null;
