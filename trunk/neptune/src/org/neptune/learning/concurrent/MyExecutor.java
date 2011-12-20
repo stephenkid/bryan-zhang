@@ -23,8 +23,8 @@ public class MyExecutor extends Thread {
 	public static void main(String args[]) {
 		ExecutorService service = Executors.newFixedThreadPool(4);
 		for (int i = 0; i < 10; i++) {
-			service.execute(new MyExecutor(i));
-			//service.submit(new MyExecutor(i));
+			//service.execute(new MyExecutor(i));
+			service.submit(new MyExecutor(i));
 		}
 		System.out.println("submit finish");
 		service.shutdown();
