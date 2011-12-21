@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<venus-server>    
+   <!-- xml中通用的配置： 所有元素在属性为class可以填写类名字，也可以填写spring容器中的beanId，但必须用符号 ${}来引用， 
+		比如 : ${myInterceptor} ,这儿的myInterceptor是spring的配置文件中已经申明了。 在property中的内容也可以采用符号${}，引用spring中声明的类进行注入。 -->   
+		   <!-- 这儿定义 拦定义截器，每个venus文件都可以有自己的拦截器定义，定义以后才可以为拦截器堆 提供拦截器 -->
+	<interceptors>           <!-- 监控拦截器，正在研发 -->        <!-- <interceptor name="monitor-interceptor" class="com.snda.service.framework.interceptor.MonitorInterceptor"/> -->          <!-- 访问控制拦截器 -->
+		<interceptor name="acl-interceptor"
+			class="com.snda.service.framework.interceptor.AccessControlInterceptor" />           <!-- 参数校验拦截器 -->
+		<interceptor name="validator-interceptor"
+			class="com.snda.service.framework.interceptor.ValidatorInterceptor" />           <!-- 缓存支持拦截器 -->
+		<!-- <interceptor name="cacheable-interceptor"
+			class="com.snda.service.framework.interceptor.CacheableInterceptor">
+			<property name="cacheClient">${memcachedClient}</property>
+		</interceptor>       -->    
+		 <!-- 自定义拦截器 -->
+		<interceptor name="MyInterceptor"
+			class="com.snda.service.hello.interceptor.MyInterceptor">
+			<property name="name">baby</property>
+			<property name="first">true</property>
+		</interceptor>
+		
+	</interceptors>       <!-- 拦截器堆定义，拦截堆可以包含多个拦截器，也可以包含多个其他拦截器堆。 在endpoint执行过程中，堆的执行循序是从上而下串行执行的 -->
+	<interceptor-stacks>
+		<interceptor-stack name="helloService-stack">
+			
+			<interceptor-ref name="acl-interceptor" />
+			<interceptor-ref name="validator-interceptor" />
+			<!-- 
+			<interceptor-ref name="monitor-interceptor" />
+			<interceptor-ref name="cacheable-interceptor" /> -->
+			<interceptor-ref name="MyInterceptor" />
+			
+		</interceptor-stack>
+		<!--  -->
+		<interceptor-stack name="helloService-other-stack">
+			<interceptor-ref name="MyInterceptor" />
+		</interceptor-stack>
+		
+	</interceptor-stacks>   
+	    <!--
+	     这儿是服务申明。每个服务包含了服务接口，拦截器堆，是否激活状态。 active : 布尔类型， 默认为true，如果false，则该服务不对外提供。 
+		version：整型范围，表示该服务能够兼容的版本，0,2 表示 兼容最小版本为0，最大版本为2 符号：[]表示范围。 符号：{}表示枚举 
+		interceptor-stack : 拦截器堆名字。如果设置了拦截器堆，则服务在执行前后会执行相关拦截器,service上可以配置，endpoint也可以配置， 
+		如果没有配置endpoint则采用service上的拦截器堆配置。 每个服务包含多个endpoint 端口的特殊描述。endpoint可有可无，如果有特殊对待，则需要在这儿声明，默认是将每个服务接口的Endpoint都暴露出来。 
+		instance元素：是服务接口实现的具体实例。 -->
+	<services>
+		<service type="com.snda.service.hello.api.HelloService"
+			interceptor-stack="helloService-stack" active="true" version="[0,2]">
+			<instance class="com.snda.service.hello.impl.DefaultHelloService">
+				<property name="greeting">hello venus hello service</property>
+			</instance>
+			<endpoint name="sayHello" active="true" />
+			<endpoint name="getHello" interceptor-stack="helloService-other-stack"
+				active="true">               <!-- use cache <cache> <key>${name}</key> </cache> need privileges <privileges>GET_HELLO</privileges> -->
+			</endpoint>
+		</service>
+	</services>
+</venus-server> 

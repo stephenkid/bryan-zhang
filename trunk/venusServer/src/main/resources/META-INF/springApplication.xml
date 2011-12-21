@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://cxf.apache.org/jaxws http://cxf.apache.org/schema/jaxws.xsd">
+	
+	<bean id="config.propertyConfigurer"    
+         class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+            <property name="location" value="classpath:venus.properties" />
+ 	</bean>
+ 	
+ 	
+	<!-- 引入venus Service 相关的配置 -->
+	<import resource="classpath:/spring/applicationContext-service-container.xml" />
+	
+	
+ 	        <!-- 加载服务配置文件 -->
+	<bean id="serviceManager"
+		class="com.snda.service.framework.services.xml.XmlFileServiceManager">
+		<property name="configFiles">
+			<list>
+				<value>classpath:VenusServices.xml</value>
+			</list>
+		</property>
+	</bean>          <!-- 设置authenticator，默认为可以使用该配置 -->
+	<bean id="authenticator" class="com.snda.toolkit.net.server.DummyAuthenticator" />
+
+
+</beans>
