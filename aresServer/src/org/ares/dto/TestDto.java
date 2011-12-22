@@ -10,6 +10,7 @@ public class TestDto implements Serializable {
     private String name;
     private Long age;
     private Map<String, Object> dateMap;
+    private TestDto2 dto2;
     
     public String getName() {
         return name;
@@ -28,5 +29,11 @@ public class TestDto implements Serializable {
     }
     public void setDateMap(Map<String, Object> dateMap) {
         this.dateMap = dateMap;
+    }
+    public TestDto2 getDto2() {
+        return dto2;
+    }
+    public void setDto2(TestDto2 dto2) {
+        this.dto2 = dto2;
     }
 }
