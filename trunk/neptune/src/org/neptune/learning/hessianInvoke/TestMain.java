@@ -20,6 +20,7 @@ public class TestMain {
         System.out.println(dto.getName());
         System.out.println(dto.getAge());
         System.out.println(dto.getDateMap());
+        System.out.println(dto.getDto2().getT2());
     }
 
 }
