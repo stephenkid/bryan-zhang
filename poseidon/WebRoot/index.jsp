@@ -36,6 +36,7 @@
 					var urlStr="${pageContext.request.contextPath}/loginAction.do";
 					dataStr="action=login&validate=validate&loginEmail="+$("#loginEmail").val()+"&loginPassword="+$("#loginPassword").val();
 					var returnStr = $.ajax({
+						type: "POST",
 			    		url: urlStr,
 			    		data:dataStr,
 			    		cache: false,
