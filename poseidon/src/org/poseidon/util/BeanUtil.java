@@ -1,6 +1,7 @@
 package org.poseidon.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,5 +46,23 @@ public class BeanUtil {
 			}
 		}
 		return returnMap;
+	}
+	
+	public static Object invokeMethod(String className, String methodName, Object ... args){
+	    Object returnObj = null;
+	    try{
+	        Class<?> c = Class.forName(className);
+	        Method[] mArray = c.getMethods();
+	        for (Method m : mArray){
+	            if(m.getName().equals(methodName)){
+	                returnObj = m.invoke(c.getInterfaces(), args);
+	                break;
+	            }
+	        }
+	    }catch(Throwable t){
+	        t.printStackTrace();
+	        returnObj = null;
+	    }
+	    return returnObj;
 	}
 }
