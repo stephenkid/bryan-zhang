@@ -11,6 +11,6 @@ public class Salt extends BeverageDecorator {
 	}
 	
 	private void add(){
-		System.out.println("¼ÓÑÎ");
+		System.out.println("åŠ ç›");
 	}
 }

@@ -12,7 +12,7 @@ public class Sugar extends BeverageDecorator {
 	}
 	
 	private void add(){
-		System.out.println("¼ÓÌÇ");
+		System.out.println("åŠ ç³–");
 	}
 	
 }
