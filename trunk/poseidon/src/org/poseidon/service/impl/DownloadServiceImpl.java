@@ -71,7 +71,7 @@ public class DownloadServiceImpl implements DownloadService {
 	
 	public void generateBigDataFile(){
 	    if (this.threadPool == null){
-	        this.threadPool = Executors.newFixedThreadPool(4);
+	        this.threadPool = Executors.newFixedThreadPool(2);
 	    }
         this.threadPool.submit(new Thread(){//也可用Callable接口，这样就可以用future获得返回值
             @Override
