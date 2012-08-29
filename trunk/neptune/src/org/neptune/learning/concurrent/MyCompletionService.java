@@ -9,6 +9,7 @@ import java.util.concurrent.Executors;
 /**
  * @author bryan
  * 将生产新的异步任务与使用已完成任务的结果分离开来的服务。
+ * 将提交任务和处理结果的代码进行解耦
  *
  */
 public class MyCompletionService implements Callable<String> {
@@ -24,7 +25,9 @@ public class MyCompletionService implements Callable<String> {
 		for (int i = 0; i < 10; i++) {
 			completion.submit(new MyCompletionService(i));
 		}
+		
 		for (int i = 0; i < 10; i++) {
+		    System.out.println("index:" + i);
 			System.out.println("taken:" + completion.take().get());
 		}
 		service.shutdown();
