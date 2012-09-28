@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.poseidon.mapper.PersonMapper">
+	<!-- 下面这段代码可有可无，如果没有的话可以在mapper类中通过注解的方式实现 -->
+	<select id="getPerson" parameterType="java.lang.Long" resultType="org.poseidon.pojo.Person">
+		select * from t_person where id = #{id}
+	</select>
+</mapper>
