@@ -1,6 +1,8 @@
 package org.poseidon.main;
 
 import java.io.Reader;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -20,7 +22,9 @@ public class MainTest {
         //获取Mapper
         PersonMapper personMapper = session.getMapper(PersonMapper.class);
         //执行sql
-        Person person = personMapper.getPerson(201201L);
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("id", 201201L);
+        Person person = personMapper.getPerson(map);
         if (person != null) {
             System.out.println(person);
         }
