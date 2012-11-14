@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+		
+	<bean id="payCompt" class="com.myWorkFlow.component.PayCompoment">
+		<property name="typeEnum" value="pay"/>
+		<property name="keyList">
+			<list>
+				<value>6</value>
+				<value>7</value>
+				<value>8</value>
+				<value>9</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="bizCompt" class="com.myWorkFlow.component.BizCompoment">
+		<property name="typeEnum" value="biz"/>
+		<property name="keyList">
+			<list>
+				<value>50</value>
+				<value>61</value>
+			</list>
+		</property>
+	</bean>
+	
+
+	
+</beans>
