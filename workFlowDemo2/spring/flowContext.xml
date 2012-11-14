@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<!-- spring上下文获取器 -->
+	<bean class="com.myWorkFlow.ApplicationContextHolder"/>
+
+	<!-- relation  -->
+	<bean id="defaultRelation" class="com.myWorkFlow.FlowRelation" init-method="init">
+		<property name="flowTypeList">
+			<list value-type="com.myWorkFlow.FlowTypeEnum">
+				<value>orderInit</value>
+				<value>discount</value>
+				<value>pay</value>
+				<value>biz</value>
+				<value>orderEnd</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="relation1" class="com.myWorkFlow.FlowRelation" init-method="init">
+		<property name="flowTypeList">
+			<list value-type="com.myWorkFlow.FlowTypeEnum">
+				<value>orderInit</value>
+				<value>biz</value>
+				<value>pay</value>
+				<value>orderEnd</value>
+			</list>
+		</property>
+		<property name="keyList">
+			<list>
+				<value>50XY01</value>
+				<value>50XY02</value>
+				<value>61XY02</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>
