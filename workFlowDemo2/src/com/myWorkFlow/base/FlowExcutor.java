@@ -10,10 +10,12 @@ public class FlowExcutor {
 		this.context = new FlowContext();
 	}
 
+	//Ö´ÐÐ
 	public void excute(String processNo){
 		
 	}
 	
+	//×é×°Flow
 	private Flow buildFlow(String processNo){
 		FlowRelation flowRla = FlowRlaManage.getFlowRla(processNo);
 		//TODO

@@ -14,8 +14,8 @@
 	<bean class="com.myWorkFlow.ApplicationContextHolder"/>
 
 	<!-- relation  -->
-	<bean id="defaultRelation" class="com.myWorkFlow.FlowRelation" init-method="init">
-		<property name="flowTypeList">
+	<bean id="defaultRelation" class="com.myWorkFlow.base.FlowRelation" init-method="init">
+		<property name="flowTypeEnumList">
 			<list value-type="com.myWorkFlow.FlowTypeEnum">
 				<value>orderInit</value>
 				<value>discount</value>
@@ -26,8 +26,8 @@
 		</property>
 	</bean>
 	
-	<bean id="relation1" class="com.myWorkFlow.FlowRelation" init-method="init">
-		<property name="flowTypeList">
+	<bean id="relation1" class="com.myWorkFlow.base.FlowRelation" init-method="init">
+		<property name="flowTypeEnumList">
 			<list value-type="com.myWorkFlow.FlowTypeEnum">
 				<value>orderInit</value>
 				<value>biz</value>

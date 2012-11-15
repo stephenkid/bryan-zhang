@@ -1,5 +1,6 @@
 package com.myWorkFlow.listener;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,16 +8,14 @@ import java.util.Map;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 
-import com.myWorkFlow.base.FlowContext;
-import com.myWorkFlow.base.FlowRelation;
+import com.myWorkFlow.base.FlowTypeEnum;
 import com.myWorkFlow.component.FlowComponent;
 import com.myWorkFlow.event.FlowCmpRegEvent;
-import com.myWorkFlow.event.FlowRlaRegEvent;
-import com.myWorkFlow.util.ApplicationContextHolder;
 
 public class FlowCmpManage implements ApplicationListener {
 
-	private static Map<String, List<FlowComponent>> flowCmpMap = new HashMap<String, List<FlowComponent>>();
+	private static Map<FlowTypeEnum, Map<String, List<FlowComponent>>> flowCmpMap 
+		= new HashMap<FlowTypeEnum, Map<String,List<FlowComponent>>>();
 
 	public void onApplicationEvent(ApplicationEvent event) {
 		if (event instanceof FlowCmpRegEvent){
@@ -25,13 +24,32 @@ public class FlowCmpManage implements ApplicationListener {
 		}
 	}
 
-	public static List<FlowComponent> getFlowCmpList(String key){
-		List<FlowComponent> cmpList = flowCmpMap.get(key);
+	public static List<FlowComponent> getFlowCmp(FlowTypeEnum type, String key){
+		List<FlowComponent> cmpList = null;
+		Map<String, List<FlowComponent>> cmpMap = flowCmpMap.get(type);
+		if (cmpMap != null && !cmpMap.isEmpty()){
+			cmpList = cmpMap.get(key);
+		}
 		return cmpList;
 	}
 	
 	public void onBind(FlowComponent flowCmp){
-		flowCmp.get
+		FlowTypeEnum type = flowCmp.getTypeEnum();
+		List<String> keyList = flowCmp.getKeyList();
+		
+		for (String key : keyList){
+			if (flowCmpMap.containsKey(type)){
+				if (flowCmpMap.get(type).containsKey(key)){
+					flowCmpMap.get(type).get(key).add(flowCmp);
+				}else{
+					flowCmpMap.get(type).put(key, Arrays.asList(new FlowComponent[]{flowCmp}));
+				}
+			}else{
+				Map<String, List<FlowComponent>> innerMap = new HashMap<String, List<FlowComponent>>();
+				innerMap.put(key, Arrays.asList(new FlowComponent[]{flowCmp}));
+				flowCmpMap.put(type, innerMap);
+			}
+		}
 	}
 	
 }

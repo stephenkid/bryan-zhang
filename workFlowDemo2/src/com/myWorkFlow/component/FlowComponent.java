@@ -13,7 +13,10 @@ public abstract class FlowComponent {
 	private FlowTypeEnum typeEnum;
 	
 	//组件对应的Key值
-	private List<String> keyList; 
+	private List<String> keyList;
+	
+	//次序，用于当同一类型找到多个组件时
+	private int index;
 	
 	//超类初始化方法，用于spring的监听机制，在OSGI不需要
 	public void init(){
@@ -41,5 +44,13 @@ public abstract class FlowComponent {
 
 	public void setKeyList(List<String> keyList) {
 		this.keyList = keyList;
+	}
+
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
 	}
 }
