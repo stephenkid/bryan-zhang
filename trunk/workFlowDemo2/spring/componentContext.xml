@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		
-	<bean id="payCompt" class="com.myWorkFlow.component.PayCompoment">
+	<bean id="payCompt" class="com.myWorkFlow.component.PayCompoment" init-method="init">
 		<property name="typeEnum" value="pay"/>
 		<property name="keyList">
 			<list>
@@ -22,7 +22,7 @@
 		</property>
 	</bean>
 	
-	<bean id="bizCompt" class="com.myWorkFlow.component.BizCompoment">
+	<bean id="bizCompt" class="com.myWorkFlow.component.BizCompoment" init-method="init">
 		<property name="typeEnum" value="biz"/>
 		<property name="keyList">
 			<list>
