@@ -1,5 +1,6 @@
 package com.myWorkFlow.listener;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +47,9 @@ public class FlowCmpManage implements ApplicationListener {
 				}
 			}else{
 				Map<String, List<FlowComponent>> innerMap = new HashMap<String, List<FlowComponent>>();
-				innerMap.put(key, Arrays.asList(new FlowComponent[]{flowCmp}));
+				List<FlowComponent> cmpList = new ArrayList<FlowComponent>();
+				cmpList.add(flowCmp);
+				innerMap.put(key, cmpList);
 				flowCmpMap.put(type, innerMap);
 			}
 		}

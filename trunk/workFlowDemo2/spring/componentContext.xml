@@ -33,13 +33,25 @@
 		</property>
 	</bean>
 	
-	<bean id="discountCmpt" class="com.myWorkFlow.component.DiscountComponent" init-method="init">
+	<bean id="discountCmpt1" class="com.myWorkFlow.component.DiscountComponent1" init-method="init">
 		<property name="typeEnum" value="discount"/>
 		<property name="keyList">
 			<list>
+				<value>61</value>
 				<value>62</value>
 			</list>
 		</property>
+		<property name="index" value="2"/>
+	</bean>
+	
+	<bean id="discountCmpt2" class="com.myWorkFlow.component.DiscountComponent2" init-method="init">
+		<property name="typeEnum" value="discount"/>
+		<property name="keyList">
+			<list>
+				<value>61</value>
+			</list>
+		</property>
+		<property name="index" value="1"/>
 	</bean>
 	
 	<bean id="orderInitCmpt" class="com.myWorkFlow.component.OrderInitComponent" init-method="init">
