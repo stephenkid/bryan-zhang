@@ -8,13 +8,13 @@ import java.util.List;
 import com.myWorkFlow.component.FlowComponent;
 
 public class Flow {
-	private List<FlowType> flowTypeList = new ArrayList<FlowType>();
+	private List<ComponentType> cmpTypeList = new ArrayList<ComponentType>();
 	
 	//获取此FLOW里所有的顺序Component
 	public List<FlowComponent> getAllComponent(){
 		List<FlowComponent> cmpList = new ArrayList<FlowComponent>();
 		List<FlowComponent> cmpInnerList = null;
-		for (FlowType type : flowTypeList){
+		for (ComponentType type : cmpTypeList){
 			cmpInnerList = type.getComponentList();
 			//根据index排序
 			Collections.sort(cmpInnerList, new Comparator<FlowComponent>() {
@@ -29,16 +29,15 @@ public class Flow {
 		return cmpList;
 	}
 	
-	public void addFlowType(FlowType type){
-		this.flowTypeList.add(type);
-	}
-	
-	public List<FlowType> getFlowTypeList() {
-		return flowTypeList;
+	public void addComponentType(ComponentType type){
+		this.cmpTypeList.add(type);
 	}
 
-	public void setFlowTypeList(List<FlowType> flowTypeList) {
-		this.flowTypeList = flowTypeList;
+	public List<ComponentType> getCmpTypeList() {
+		return cmpTypeList;
 	}
 
+	public void setCmpTypeList(List<ComponentType> cmpTypeList) {
+		this.cmpTypeList = cmpTypeList;
+	}
 }

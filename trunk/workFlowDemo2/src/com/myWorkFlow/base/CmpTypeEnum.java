@@ -1,6 +1,6 @@
 package com.myWorkFlow.base;
 
-public enum FlowTypeEnum {
+public enum CmpTypeEnum {
 	pay,
 	biz,
 	discount,

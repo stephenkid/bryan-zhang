@@ -6,7 +6,7 @@ import com.myWorkFlow.event.FlowRlaRegEvent;
 import com.myWorkFlow.util.ApplicationContextHolder;
 
 public class FlowRelation {
-	private List<FlowTypeEnum> FlowTypeEnumList;
+	private List<CmpTypeEnum> cmpTypeEnumList;
 	
 	private List<String> keyList;
 
@@ -24,11 +24,11 @@ public class FlowRelation {
 		this.keyList = keyList;
 	}
 
-	public List<FlowTypeEnum> getFlowTypeEnumList() {
-		return FlowTypeEnumList;
+	public List<CmpTypeEnum> getCmpTypeEnumList() {
+		return cmpTypeEnumList;
 	}
 
-	public void setFlowTypeEnumList(List<FlowTypeEnum> flowTypeEnumList) {
-		FlowTypeEnumList = flowTypeEnumList;
+	public void setCmpTypeEnumList(List<CmpTypeEnum> cmpTypeEnumList) {
+		this.cmpTypeEnumList = cmpTypeEnumList;
 	}
 }

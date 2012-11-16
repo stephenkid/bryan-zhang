@@ -15,8 +15,8 @@
 
 	<!-- relation  -->
 	<bean id="defaultRelation" class="com.myWorkFlow.base.FlowRelation" init-method="init">
-		<property name="flowTypeEnumList">
-			<list value-type="com.myWorkFlow.base.FlowTypeEnum">
+		<property name="cmpTypeEnumList">
+			<list value-type="com.myWorkFlow.base.CmpTypeEnum">
 				<value>orderInit</value>
 				<value>discount</value>
 				<value>pay</value>
@@ -32,8 +32,8 @@
 	</bean>
 	
 	<bean id="relation1" class="com.myWorkFlow.base.FlowRelation" init-method="init">
-		<property name="flowTypeEnumList">
-			<list value-type="com.myWorkFlow.base.FlowTypeEnum">
+		<property name="cmpTypeEnumList">
+			<list value-type="com.myWorkFlow.base.CmpTypeEnum">
 				<value>orderInit</value>
 				<value>biz</value>
 				<value>pay</value>

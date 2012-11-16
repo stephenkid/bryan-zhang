@@ -48,10 +48,10 @@ public class FlowExcutor {
 	private Flow buildFlow(String processNo){
 		Flow flow = new Flow();
 		FlowRelation flowRla = FlowRlaManage.getFlowRla(processNo);
-		FlowType ft = null;
-		for(FlowTypeEnum ftEnum : flowRla.getFlowTypeEnumList()){
-			ft = new FlowType();
-			ft.setTypeEnum(ftEnum);//设置组件类型
+		ComponentType ct = null;
+		for(CmpTypeEnum ftEnum : flowRla.getCmpTypeEnumList()){
+			ct = new ComponentType();
+			ct.setTypeEnum(ftEnum);//设置组件类型
 			String key = this.getKeyFromProcess(processNo, ftEnum);//取到组件对应的key
 			
 			//开始装配组件
@@ -59,26 +59,26 @@ public class FlowExcutor {
 			if (cmpList != null){
 				for (FlowComponent cmp : cmpList){
 					if (cmp.isBuild(context)){//判断这个组件是否装配
-						ft.addComponent(cmp);
+						ct.addComponent(cmp);
 					}
 				}
 			}
-			flow.addFlowType(ft);
+			flow.addComponentType(ct);
 		}
 		return flow;
 	}
 	
-	private String getKeyFromProcess(String processNo, FlowTypeEnum flEnum){
+	private String getKeyFromProcess(String processNo, CmpTypeEnum flEnum){
 		String[] processArray = processNo.split("_");
-		if (flEnum.equals(FlowTypeEnum.biz)){
+		if (flEnum.equals(CmpTypeEnum.biz)){
 			return processArray[1];
-		}else if(flEnum.equals(FlowTypeEnum.pay)){
+		}else if(flEnum.equals(CmpTypeEnum.pay)){
 			return processArray[2];
-		}else if(flEnum.equals(FlowTypeEnum.orderInit)){
+		}else if(flEnum.equals(CmpTypeEnum.orderInit)){
 			return processArray[1];
-		}else if(flEnum.equals(FlowTypeEnum.orderEnd)){
+		}else if(flEnum.equals(CmpTypeEnum.orderEnd)){
 			return processArray[1];
-		}else if(flEnum.equals(FlowTypeEnum.discount)){
+		}else if(flEnum.equals(CmpTypeEnum.discount)){
 			return processArray[1];
 		}
 		return null;
