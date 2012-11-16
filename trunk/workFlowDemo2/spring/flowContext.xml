@@ -11,12 +11,12 @@
 		http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- spring上下文获取器 -->
-	<bean class="com.myWorkFlow.ApplicationContextHolder"/>
+	<bean class="com.myWorkFlow.util.ApplicationContextHolder"/>
 
 	<!-- relation  -->
 	<bean id="defaultRelation" class="com.myWorkFlow.base.FlowRelation" init-method="init">
 		<property name="flowTypeEnumList">
-			<list value-type="com.myWorkFlow.FlowTypeEnum">
+			<list value-type="com.myWorkFlow.base.FlowTypeEnum">
 				<value>orderInit</value>
 				<value>discount</value>
 				<value>pay</value>
@@ -24,11 +24,16 @@
 				<value>orderEnd</value>
 			</list>
 		</property>
+		<property name="keyList">
+			<list>
+				<value>default</value>
+			</list>
+		</property>
 	</bean>
 	
 	<bean id="relation1" class="com.myWorkFlow.base.FlowRelation" init-method="init">
 		<property name="flowTypeEnumList">
-			<list value-type="com.myWorkFlow.FlowTypeEnum">
+			<list value-type="com.myWorkFlow.base.FlowTypeEnum">
 				<value>orderInit</value>
 				<value>biz</value>
 				<value>pay</value>
@@ -37,11 +42,13 @@
 		</property>
 		<property name="keyList">
 			<list>
-				<value>50XY01</value>
-				<value>50XY02</value>
-				<value>61XY02</value>
+				<value>0100_50_01_00</value>
+				<value>0200_50_02_00</value>
+				<value>0100_61_03_00</value>
 			</list>
 		</property>
 	</bean>
 
+	<!-- 关系监听器 -->
+	<bean class="com.myWorkFlow.listener.FlowRlaManage"/>
 </beans>

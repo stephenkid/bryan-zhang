@@ -14,10 +14,10 @@
 		<property name="typeEnum" value="pay"/>
 		<property name="keyList">
 			<list>
-				<value>6</value>
-				<value>7</value>
-				<value>8</value>
-				<value>9</value>
+				<value>01</value>
+				<value>02</value>
+				<value>03</value>
+				<value>04</value>
 			</list>
 		</property>
 	</bean>
@@ -32,6 +32,7 @@
 		</property>
 	</bean>
 	
-
+	<!-- 关系监听器 -->
+	<bean class="com.myWorkFlow.listener.FlowCmpManage"/>
 	
 </beans>

@@ -8,7 +8,7 @@ import java.util.List;
 import com.myWorkFlow.component.FlowComponent;
 
 public class Flow {
-	private List<FlowType> flowTypeList;
+	private List<FlowType> flowTypeList = new ArrayList<FlowType>();
 	
 	//获取此FLOW里所有的顺序Component
 	public List<FlowComponent> getAllComponent(){
@@ -27,6 +27,10 @@ public class Flow {
 			}
 		}
 		return cmpList;
+	}
+	
+	public void addFlowType(FlowType type){
+		this.flowTypeList.add(type);
 	}
 	
 	public List<FlowType> getFlowTypeList() {
