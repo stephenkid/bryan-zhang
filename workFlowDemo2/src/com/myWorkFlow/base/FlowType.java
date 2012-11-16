@@ -1,12 +1,13 @@
 package com.myWorkFlow.base;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.myWorkFlow.component.FlowComponent;
 
 public class FlowType {
 	//组件类型对应的具体组件，大多数情况下只有一个
-	private List<FlowComponent> componentList;
+	private List<FlowComponent> componentList = new ArrayList<FlowComponent>();
 
 	//组件类型所属的类型
 	private FlowTypeEnum typeEnum;

@@ -28,7 +28,7 @@ public class FlowRlaManage implements ApplicationListener {
 		flowRla = flowRlaMap.get(key);
 		//如果获取不到流程关系，则取默认的流程关系
 		if (flowRla == null){
-			flowRla = (FlowRelation)ApplicationContextHolder.getBean("defaultRelation");
+			flowRla = flowRlaMap.get("default");
 		}
 		return flowRla;
 	}

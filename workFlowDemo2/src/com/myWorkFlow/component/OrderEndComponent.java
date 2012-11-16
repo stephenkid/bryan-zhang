@@ -4,8 +4,9 @@ import com.myWorkFlow.base.FlowContext;
 
 public class OrderEndComponent extends FlowComponent {
 
-	public void excuteWithContext(FlowContext context) {
+	public boolean excuteWithContext(FlowContext context) {
 		System.out.println("执行订单结束操作");
+		return true;
 	}
 
 }

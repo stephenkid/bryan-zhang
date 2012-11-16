@@ -4,8 +4,9 @@ import com.myWorkFlow.base.FlowContext;
 
 public class BizCompoment extends FlowComponent {
 
-	public void excuteWithContext(FlowContext context) {
+	public boolean excuteWithContext(FlowContext context) {
 		System.out.println("获取Biz对象做业务");
+		return true;
 	}
 	
 	public void rollbackWithContext(FlowContext context) {

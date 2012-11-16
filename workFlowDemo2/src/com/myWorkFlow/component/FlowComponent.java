@@ -24,7 +24,12 @@ public abstract class FlowComponent {
 		ApplicationContextHolder.getApplicationContext().publishEvent(event);
 	}
 	
-	public abstract void excuteWithContext(FlowContext context);
+	public abstract boolean excuteWithContext(FlowContext context);
+	
+	public boolean isBuild(FlowContext context){
+		//是否装配
+		return true;
+	}
 	
 	public void rollbackWithContext(FlowContext context){
 		//如果有就子类复写。没有就不复写
