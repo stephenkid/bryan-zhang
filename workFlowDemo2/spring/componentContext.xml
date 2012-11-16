@@ -22,12 +22,44 @@
 		</property>
 	</bean>
 	
-	<bean id="bizCompt" class="com.myWorkFlow.component.BizCompoment" init-method="init">
+	<bean id="bizCompt" class="com.myWorkFlow.component.BizComponent" init-method="init">
 		<property name="typeEnum" value="biz"/>
 		<property name="keyList">
 			<list>
 				<value>50</value>
 				<value>61</value>
+				<value>62</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="discountCmpt" class="com.myWorkFlow.component.DiscountComponent" init-method="init">
+		<property name="typeEnum" value="discount"/>
+		<property name="keyList">
+			<list>
+				<value>62</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="orderInitCmpt" class="com.myWorkFlow.component.OrderInitComponent" init-method="init">
+		<property name="typeEnum" value="orderInit"/>
+		<property name="keyList">
+			<list>
+				<value>50</value>
+				<value>61</value>
+				<value>62</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="orderEndCmpt" class="com.myWorkFlow.component.OrderEndComponent" init-method="init">
+		<property name="typeEnum" value="orderEnd"/>
+		<property name="keyList">
+			<list>
+				<value>50</value>
+				<value>61</value>
+				<value>62</value>
 			</list>
 		</property>
 	</bean>

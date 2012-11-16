@@ -3,14 +3,14 @@ package com.myWorkFlow.component;
 import java.util.List;
 
 import com.myWorkFlow.base.FlowContext;
-import com.myWorkFlow.base.FlowTypeEnum;
+import com.myWorkFlow.base.CmpTypeEnum;
 import com.myWorkFlow.event.FlowCmpRegEvent;
 import com.myWorkFlow.util.ApplicationContextHolder;
 
 public abstract class FlowComponent {
 	
 	//组件属于的类型
-	private FlowTypeEnum typeEnum;
+	private CmpTypeEnum typeEnum;
 	
 	//组件对应的Key值
 	private List<String> keyList;
@@ -35,11 +35,11 @@ public abstract class FlowComponent {
 		//如果有就子类复写。没有就不复写
 	}
 
-	public FlowTypeEnum getTypeEnum() {
+	public CmpTypeEnum getTypeEnum() {
 		return typeEnum;
 	}
 
-	public void setTypeEnum(FlowTypeEnum typeEnum) {
+	public void setTypeEnum(CmpTypeEnum typeEnum) {
 		this.typeEnum = typeEnum;
 	}
 

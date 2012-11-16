@@ -10,7 +10,7 @@ public class ComponentType {
 	private List<FlowComponent> componentList = new ArrayList<FlowComponent>();
 
 	//组件类型所属的类型
-	private FlowTypeEnum typeEnum;
+	private CmpTypeEnum typeEnum;
 	
 	public void addComponent(FlowComponent component){
 		this.componentList.add(component);
@@ -28,11 +28,11 @@ public class ComponentType {
 		this.componentList = componentList;
 	}
 
-	public FlowTypeEnum getTypeEnum() {
+	public CmpTypeEnum getTypeEnum() {
 		return typeEnum;
 	}
 
-	public void setTypeEnum(FlowTypeEnum typeEnum) {
+	public void setTypeEnum(CmpTypeEnum typeEnum) {
 		this.typeEnum = typeEnum;
 	}
 }

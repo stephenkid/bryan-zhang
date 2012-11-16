@@ -8,14 +8,14 @@ import java.util.Map;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 
-import com.myWorkFlow.base.FlowTypeEnum;
+import com.myWorkFlow.base.CmpTypeEnum;
 import com.myWorkFlow.component.FlowComponent;
 import com.myWorkFlow.event.FlowCmpRegEvent;
 
 public class FlowCmpManage implements ApplicationListener {
 
-	private static Map<FlowTypeEnum, Map<String, List<FlowComponent>>> flowCmpMap 
-		= new HashMap<FlowTypeEnum, Map<String,List<FlowComponent>>>();
+	private static Map<CmpTypeEnum, Map<String, List<FlowComponent>>> flowCmpMap 
+		= new HashMap<CmpTypeEnum, Map<String,List<FlowComponent>>>();
 
 	public void onApplicationEvent(ApplicationEvent event) {
 		if (event instanceof FlowCmpRegEvent){
@@ -24,7 +24,7 @@ public class FlowCmpManage implements ApplicationListener {
 		}
 	}
 
-	public static List<FlowComponent> getFlowCmp(FlowTypeEnum type, String key){
+	public static List<FlowComponent> getFlowCmp(CmpTypeEnum type, String key){
 		List<FlowComponent> cmpList = null;
 		Map<String, List<FlowComponent>> cmpMap = flowCmpMap.get(type);
 		if (cmpMap != null && !cmpMap.isEmpty()){
@@ -34,7 +34,7 @@ public class FlowCmpManage implements ApplicationListener {
 	}
 	
 	public void onBind(FlowComponent flowCmp){
-		FlowTypeEnum type = flowCmp.getTypeEnum();
+		CmpTypeEnum type = flowCmp.getTypeEnum();
 		List<String> keyList = flowCmp.getKeyList();
 		
 		for (String key : keyList){
