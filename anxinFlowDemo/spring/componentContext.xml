@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+		
+	<bean id="payCompt" class="com.myWorkFlow.component.PayCompoment" init-method="init">
+		<property name="typeEnum" value="pay"/>
+		<property name="keyList">
+			<list>
+				<value>01</value>
+				<value>02</value>
+				<value>03</value>
+				<value>04</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="bizCompt" class="com.myWorkFlow.component.BizComponent" init-method="init">
+		<property name="typeEnum" value="biz"/>
+		<property name="keyList">
+			<list>
+				<value>50</value>
+				<value>61</value>
+				<value>62</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="discountCmpt1" class="com.myWorkFlow.component.DiscountComponent1" init-method="init">
+		<property name="typeEnum" value="discount"/>
+		<property name="keyList">
+			<list>
+				<value>61</value>
+				<value>62</value>
+			</list>
+		</property>
+		<property name="index" value="2"/>
+	</bean>
+	
+	<bean id="discountCmpt2" class="com.myWorkFlow.component.DiscountComponent2" init-method="init">
+		<property name="typeEnum" value="discount"/>
+		<property name="keyList">
+			<list>
+				<value>61</value>
+			</list>
+		</property>
+		<property name="index" value="1"/>
+	</bean>
+	
+	<bean id="orderInitCmpt" class="com.myWorkFlow.component.OrderInitComponent" init-method="init">
+		<property name="typeEnum" value="orderInit"/>
+		<property name="keyList">
+			<list>
+				<value>50</value>
+				<value>61</value>
+				<value>62</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="orderEndCmpt" class="com.myWorkFlow.component.OrderEndComponent" init-method="init">
+		<property name="typeEnum" value="orderEnd"/>
+		<property name="keyList">
+			<list>
+				<value>50</value>
+				<value>61</value>
+				<value>62</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- 选取类cmpt -->
+	<bean id="bizSltCmpt" class="com.myWorkFlow.component.BizSltComponent" init-method="init">
+		<property name="typeEnum" value="biz"/>
+		<property name="keyList">
+			<list>
+				<value>70</value>
+			</list>
+		</property>
+		<property name="cmpSltMap">
+			<map>
+				<entry key="v1" value-ref="bizV1"/>
+				<entry key="v2" value-ref="bizV2"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="bizV1" class="com.myWorkFlow.component.BizComponentV1"/>
+	<bean id="bizV2" class="com.myWorkFlow.component.BizComponentV2"/>
+	
+	<!-- 关系监听器 -->
+	<bean class="com.myWorkFlow.listener.FlowCmpManage"/>
+	
+</beans>
