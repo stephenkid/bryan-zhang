@@ -3,6 +3,7 @@ package com.myWorkFlow.test;
 import org.junit.Test;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import com.myWorkFlow.base.Flow;
 import com.myWorkFlow.base.FlowContext;
 import com.myWorkFlow.base.FlowExcutor;
 
@@ -27,11 +28,11 @@ public class TestMain {
 		//以下处理码走默认流程
 //		excutor.excute("0100_62_04_00");//所有的type都有
 //		excutor.excute("0100_50_04_00");//没有抵扣type
-//		excutor.excute("0100_61_04_00");//走2个抵扣流程
+		excutor.excute("0100_61_04_00");//走2个抵扣流程
 		
 		//以下处理码走relation1
-		//excutor.excute("0100_50_01_00");//先做biz再做支付
-		excutor.excute("0100_70_01_00");//选取类，通过一个选取组件获得二维的组件
+//		excutor.excute("0100_50_01_00");//先做biz再做支付
+//		excutor.excute("0100_70_01_00");//选取类，通过一个选取组件获得二维的组件
 		
 	}
 
