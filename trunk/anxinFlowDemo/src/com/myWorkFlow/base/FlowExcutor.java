@@ -2,6 +2,7 @@ package com.myWorkFlow.base;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.myWorkFlow.component.FlowComponent;
@@ -24,8 +25,8 @@ public class FlowExcutor {
 		boolean isRollBack = false;
 		//定义回滚组件顺序列表
 		List<FlowComponent> rollBackCmpList = new ArrayList<FlowComponent>();
-		//取到此flow里所有的按顺序执行的组件列表
-		List<FlowComponent> allCmpList = flow.getAllComponent();
+		//取到此flow里所有的组件列表
+		List<FlowComponent> allCmpList = flow.getCmpList();
 		for (FlowComponent cmp : allCmpList){
 			//针对选取类组件处理
 			if (cmp instanceof FlowSelector){
@@ -58,22 +59,29 @@ public class FlowExcutor {
 	private Flow buildFlow(String processNo){
 		Flow flow = new Flow();
 		FlowRelation flowRla = FlowRlaManage.getFlowRla(processNo);
-		ComponentType ct = null;
+		String unionKey = null;
 		for(CmpTypeEnum ftEnum : flowRla.getCmpTypeEnumList()){
-			ct = new ComponentType();
-			ct.setTypeEnum(ftEnum);//设置组件类型
 			String key = this.getKeyFromProcess(processNo, ftEnum);//取到组件对应的key
-			
 			//开始装配组件
-			List<FlowComponent> cmpList = FlowCmpManage.getFlowCmp(ftEnum, key);
+			unionKey = ftEnum.name() + "_" + key;
+			List<FlowComponent> cmpList = FlowCmpManage.getFlowCmp(unionKey);
+			
 			if (cmpList != null){
+				//如果同一类型业务取到2个组件，则对index进行排序
+				if (cmpList.size() > 1){
+					Collections.sort(cmpList, new Comparator<FlowComponent>() {
+						public int compare(FlowComponent o1, FlowComponent o2) {
+							return (o1.getIndex() - o2.getIndex());
+						};
+					});
+				}
+				
 				for (FlowComponent cmp : cmpList){
 					if (cmp.isBuild(context)){//判断这个组件是否装配
-						ct.addComponent(cmp);
+						flow.addCmp(cmp);
 					}
 				}
 			}
-			flow.addComponentType(ct);
 		}
 		return flow;
 	}
