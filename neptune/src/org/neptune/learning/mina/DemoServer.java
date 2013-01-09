@@ -23,7 +23,7 @@ public class DemoServer {
 					LineDelimiter.WINDOWS.getValue())));
 			acceptor.getSessionConfig().setReadBufferSize(2048);
 			acceptor.getSessionConfig().setIdleTime(IdleStatus.BOTH_IDLE, 10);
-			acceptor.setHandler(new DemoHandler());
+			acceptor.setHandler(new DemoServerHandler());
 			acceptor.bind(new InetSocketAddress(port));
 			System.out.println("server started,port:" + port);
 		}catch(Throwable t){
