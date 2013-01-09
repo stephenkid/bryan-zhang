@@ -20,7 +20,8 @@ public class DemoServerHandler extends IoHandlerAdapter {
 	@Override
 	public void messageReceived(IoSession session, Object message)
 			throws Exception {
-		String msg = message.toString();
+		System.out.println(message);
+		Person msg = (Person)message;
 		System.out.println("服务端收到的数据为:" + msg);
 		if ("bye".equals(msg)){
 			session.close();
@@ -51,5 +52,6 @@ public class DemoServerHandler extends IoHandlerAdapter {
 	public void exceptionCaught(IoSession session, Throwable cause)
 			throws Exception {
 		System.out.println("服务端发送异常...");
+		cause.printStackTrace();
 	}
 }
